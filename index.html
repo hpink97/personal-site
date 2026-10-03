@@ -65,8 +65,8 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 #pp1:checked~.pile label[for=pp1]+.sheet,#pp2:checked~.pile label[for=pp2]+.sheet,#pp3:checked~.pile label[for=pp3]+.sheet,#pp4:checked~.pile label[for=pp4]+.sheet,.papers:not(:has(.pp-r:checked)) label[for=pp1]+.sheet{margin-top:16px}
 #pp1:checked~.pile label[for=pp1]::before,#pp2:checked~.pile label[for=pp2]::before,#pp3:checked~.pile label[for=pp3]::before,#pp4:checked~.pile label[for=pp4]::before,#pp5:checked~.pile label[for=pp5]::before,.papers:not(:has(.pp-r:checked)) label[for=pp1]::before{opacity:1;transform:none}
 #pp1:focus-visible~.pile label[for=pp1],#pp2:focus-visible~.pile label[for=pp2],#pp3:focus-visible~.pile label[for=pp3],#pp4:focus-visible~.pile label[for=pp4],#pp5:focus-visible~.pile label[for=pp5]{outline:3px solid #2FE6B0;outline-offset:4px}
-.viewer{flex:2 1 520px;min-width:0}
-.v{display:none;border:1px solid #1E2A25;border-radius:10px;background:#0D1211;overflow:hidden}
+.viewer{flex:2 1 520px;min-width:0;border:1px solid #1E2A25;border-radius:10px;background:#0D1211;overflow:hidden}
+.v{display:none}
 .v1{display:block}
 .papers:has(.pp-r:checked) .v1{display:none}
 #pp1:checked~.viewer .v1,#pp2:checked~.viewer .v2,#pp3:checked~.viewer .v3,#pp4:checked~.viewer .v4,#pp5:checked~.viewer .v5{display:block;animation:vin .35s ease-out}
@@ -727,11 +727,11 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 </div>
 
 <div class="papers">
-<input class="pp-r" type="radio" name="pp" id="pp1" aria-label="Scientific Reports 2026">
-<input class="pp-r" type="radio" name="pp" id="pp2" aria-label="bioRxiv 2023 preprint">
-<input class="pp-r" type="radio" name="pp" id="pp3" aria-label="PhD thesis 2023">
-<input class="pp-r" type="radio" name="pp" id="pp4" aria-label="Theoretical and Applied Genetics 2022">
-<input class="pp-r" type="radio" name="pp" id="pp5" aria-label="Cell Reports 2020">
+<input class="pp-r" type="radio" name="pp" id="pp1" data-pdf="s41598-026-56604-4.pdf" aria-label="Scientific Reports 2026">
+<input class="pp-r" type="radio" name="pp" id="pp2" data-pdf="Pink2023_bioRxiv.pdf" aria-label="bioRxiv 2023 preprint">
+<input class="pp-r" type="radio" name="pp" id="pp3" data-pdf="Pink_205061442_WREO.pdf" aria-label="PhD thesis 2023">
+<input class="pp-r" type="radio" name="pp" id="pp4" data-pdf="s00122-022-04129-5.pdf" aria-label="Theoretical and Applied Genetics 2022">
+<input class="pp-r" type="radio" name="pp" id="pp5" data-pdf="PIIS2211124720306343.pdf" aria-label="Cell Reports 2020">
 
 <div class="pile">
 <label class="sheet" for="pp1">
@@ -773,10 +773,7 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 <div class="v-meta"><span class="mono" style="font-size: 11px; color: #4C8DFF">SCIENTIFIC REPORTS · 2026 · SKIN EPIGENETICS</span><span class="v-title">Non-ablative fractional laser 1940-nm treatment modulates epigenetic signatures associated with skin aging in a split-face investigation</span></div>
 <div class="v-btns"><a class="btn btn-g mono" href="https://www.nature.com/articles/s41598-026-56604-4" target="_blank" rel="noopener">Nature ↗</a><a class="btn btn-p mono" href="papers/s41598-026-56604-4.pdf" target="_blank" rel="noopener">Full PDF ↗</a></div>
 </div>
-<div class="v-find mono"><span>jump to</span><a target="pdf1" href="pdfjs/web/viewer.html?file=../../papers/s41598-026-56604-4.pdf#search=methylation">methylation</a><a target="pdf1" href="pdfjs/web/viewer.html?file=../../papers/s41598-026-56604-4.pdf#search=1940">1940 nm</a><a target="pdf1" href="pdfjs/web/viewer.html?file=../../papers/s41598-026-56604-4.pdf#search=epigenetic">epigenetic</a></div>
-<div class="v-body">
-<iframe name="pdf1" src="pdfjs/web/viewer.html?file=../../papers/s41598-026-56604-4.pdf#zoom=page-width" title="Scientific Reports 2026 PDF" loading="lazy"></iframe>
-</div>
+<div class="v-find mono"><span>jump to</span><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/s41598-026-56604-4.pdf#search=methylation">methylation</a><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/s41598-026-56604-4.pdf#search=1940">1940 nm</a><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/s41598-026-56604-4.pdf#search=epigenetic">epigenetic</a></div>
 </div>
 
 <div class="v v2">
@@ -784,10 +781,7 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 <div class="v-meta"><span class="mono" style="font-size: 11px; color: #E3B23C">BIORXIV PREPRINT · 2023 · NETWORK INFERENCE</span><span class="v-title">Identification of Lactuca sativa transcription factors impacting resistance to Botrytis cinerea through predictive network inference</span></div>
 <div class="v-btns"><a class="btn btn-g mono" href="https://www.biorxiv.org/content/10.1101/2023.07.19.549542v1" target="_blank" rel="noopener">bioRxiv ↗</a><a class="btn btn-p mono" href="papers/Pink2023_bioRxiv.pdf" target="_blank" rel="noopener">Full PDF ↗</a></div>
 </div>
-<div class="v-find mono"><span>jump to</span><a target="pdf2" href="pdfjs/web/viewer.html?file=../../papers/Pink2023_bioRxiv.pdf#search=OutPredict">OutPredict</a><a target="pdf2" href="pdfjs/web/viewer.html?file=../../papers/Pink2023_bioRxiv.pdf#search=LsNAC53">LsNAC53</a><a target="pdf2" href="pdfjs/web/viewer.html?file=../../papers/Pink2023_bioRxiv.pdf#search=BOS1">BOS1</a></div>
-<div class="v-body">
-<iframe name="pdf2" src="pdfjs/web/viewer.html?file=../../papers/Pink2023_bioRxiv.pdf#zoom=page-width" title="bioRxiv 2023 preprint PDF" loading="lazy"></iframe>
-</div>
+<div class="v-find mono"><span>jump to</span><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/Pink2023_bioRxiv.pdf#search=OutPredict">OutPredict</a><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/Pink2023_bioRxiv.pdf#search=LsNAC53">LsNAC53</a><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/Pink2023_bioRxiv.pdf#search=BOS1">BOS1</a></div>
 </div>
 
 <div class="v v3">
@@ -795,10 +789,7 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 <div class="v-meta"><span class="mono" style="font-size: 11px; color: #E3B23C">PHD THESIS · 2023 · UNIVERSITY OF YORK</span><span class="v-title">Transcriptomics and gene regulatory network inference to identify key regulators of Lactuca sativa disease resistance</span></div>
 <div class="v-btns"><a class="btn btn-g mono" href="https://etheses.whiterose.ac.uk/id/eprint/34510/" target="_blank" rel="noopener">White Rose ↗</a><a class="btn btn-p mono" href="papers/Pink_205061442_WREO.pdf" target="_blank" rel="noopener">Full PDF ↗</a></div>
 </div>
-<div class="v-find mono"><span>jump to</span><a target="pdf3" href="pdfjs/web/viewer.html?file=../../papers/Pink_205061442_WREO.pdf#search=OutPredict">OutPredict</a><a target="pdf3" href="pdfjs/web/viewer.html?file=../../papers/Pink_205061442_WREO.pdf#search=LsNAC53">LsNAC53</a><a target="pdf3" href="pdfjs/web/viewer.html?file=../../papers/Pink_205061442_WREO.pdf#search=Sclerotinia">Sclerotinia</a></div>
-<div class="v-body">
-<iframe name="pdf3" src="pdfjs/web/viewer.html?file=../../papers/Pink_205061442_WREO.pdf#zoom=page-width" title="PhD thesis PDF" loading="lazy"></iframe>
-</div>
+<div class="v-find mono"><span>jump to</span><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/Pink_205061442_WREO.pdf#search=OutPredict">OutPredict</a><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/Pink_205061442_WREO.pdf#search=LsNAC53">LsNAC53</a><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/Pink_205061442_WREO.pdf#search=Sclerotinia">Sclerotinia</a></div>
 </div>
 
 <div class="v v4">
@@ -806,10 +797,7 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 <div class="v-meta"><span class="mono" style="font-size: 11px; color: #7CC04A">THEORETICAL AND APPLIED GENETICS · 2022 · 135(7), 2481–2500</span><span class="v-title">Identification of genetic loci in lettuce mediating quantitative resistance to fungal pathogens</span></div>
 <div class="v-btns"><a class="btn btn-g mono" href="https://doi.org/10.1007/s00122-022-04129-5" target="_blank" rel="noopener">Springer ↗</a><a class="btn btn-p mono" href="papers/s00122-022-04129-5.pdf" target="_blank" rel="noopener">Full PDF ↗</a></div>
 </div>
-<div class="v-find mono"><span>jump to</span><a target="pdf4" href="pdfjs/web/viewer.html?file=../../papers/s00122-022-04129-5.pdf#search=QTL">QTL</a><a target="pdf4" href="pdfjs/web/viewer.html?file=../../papers/s00122-022-04129-5.pdf#search=Sclerotinia">Sclerotinia</a><a target="pdf4" href="pdfjs/web/viewer.html?file=../../papers/s00122-022-04129-5.pdf#search=Botrytis">Botrytis</a></div>
-<div class="v-body">
-<iframe name="pdf4" src="pdfjs/web/viewer.html?file=../../papers/s00122-022-04129-5.pdf#zoom=page-width" title="Theoretical and Applied Genetics 2022 PDF" loading="lazy"></iframe>
-</div>
+<div class="v-find mono"><span>jump to</span><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/s00122-022-04129-5.pdf#search=QTL">QTL</a><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/s00122-022-04129-5.pdf#search=Sclerotinia">Sclerotinia</a><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/s00122-022-04129-5.pdf#search=Botrytis">Botrytis</a></div>
 </div>
 
 <div class="v v5">
@@ -817,10 +805,11 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 <div class="v-meta"><span class="mono" style="font-size: 11px; color: #FF5C8A">CELL REPORTS · 2020 · 31(8), 107681</span><span class="v-title">Prophase-specific perinuclear actin coordinates centrosome separation and positioning to ensure accurate chromosome segregation</span></div>
 <div class="v-btns"><a class="btn btn-g mono" href="https://doi.org/10.1016/j.celrep.2020.107681" target="_blank" rel="noopener">Cell Press ↗</a><a class="btn btn-p mono" href="papers/PIIS2211124720306343.pdf" target="_blank" rel="noopener">Full PDF ↗</a></div>
 </div>
-<div class="v-find mono"><span>jump to</span><a target="pdf5" href="pdfjs/web/viewer.html?file=../../papers/PIIS2211124720306343.pdf#search=prophase">prophase</a><a target="pdf5" href="pdfjs/web/viewer.html?file=../../papers/PIIS2211124720306343.pdf#search=actin">actin</a><a target="pdf5" href="pdfjs/web/viewer.html?file=../../papers/PIIS2211124720306343.pdf#search=centrosome">centrosome</a></div>
-<div class="v-body">
-<iframe name="pdf5" src="pdfjs/web/viewer.html?file=../../papers/PIIS2211124720306343.pdf#zoom=page-width" title="Cell Reports 2020 PDF" loading="lazy"></iframe>
+<div class="v-find mono"><span>jump to</span><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/PIIS2211124720306343.pdf#search=prophase">prophase</a><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/PIIS2211124720306343.pdf#search=actin">actin</a><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/PIIS2211124720306343.pdf#search=centrosome">centrosome</a></div>
 </div>
+
+<div class="v-body">
+<iframe id="pdfv" name="pdfv" src="pdfjs/web/viewer.html?file=../../papers/s41598-026-56604-4.pdf#zoom=page-width" title="Paper PDF viewer" loading="lazy"></iframe>
 </div>
 
 </div>
@@ -865,14 +854,33 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 
 </div>
 <script>
+// One shared pdf.js instance: swap documents in place instead of spinning up a viewer + worker per paper
+const frame = document.getElementById('pdfv');
 // pdf.js can't fetch PDFs over file://, so fall back to the browser's native viewer when opened locally
-if (location.protocol === 'file:') {
-  document.querySelectorAll('.v-body iframe').forEach(f => {
-    const m = f.getAttribute('src').match(/file=\.\.\/\.\.\/([^#&]+)/);
-    if (m) f.src = m[1] + '#view=FitH';
-  });
+const local = location.protocol === 'file:';
+let current = 's41598-026-56604-4.pdf', loading = null;
+if (local) {
+  frame.src = 'papers/' + current + '#view=FitH';
   document.querySelectorAll('.v-find').forEach(e => e.style.display = 'none');
 }
+const viewerApp = () => { try { return frame.contentWindow.PDFViewerApplication; } catch { return null; } };
+document.querySelectorAll('.pp-r').forEach(r => r.addEventListener('change', () => {
+  const pdf = r.dataset.pdf;
+  if (pdf === current) return;
+  current = pdf;
+  const app = viewerApp();
+  if (local) frame.src = 'papers/' + pdf + '#view=FitH';
+  else if (app) {
+    const p = loading = app.initializedPromise.then(() => app.open({ url: '../../papers/' + pdf }));
+    p.finally(() => { if (loading === p) loading = null; });
+  } else frame.src = 'pdfjs/web/viewer.html?file=../../papers/' + pdf + '#zoom=page-width';
+}));
+document.querySelectorAll('.v-find a').forEach(a => a.addEventListener('click', e => {
+  const app = viewerApp();
+  if (!app || !app.pdfDocument || loading) return;
+  e.preventDefault();
+  app.pdfLinkService.setHash(new URL(a.href).hash.slice(1));
+}));
 </script>
 </body>
 </html>

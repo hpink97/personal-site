@@ -5620,7 +5620,7 @@ const defaultOptions = new Map([["allowedGlobalEvents", {
   value: 400,
   kind: OptionKind.VIEWER + OptionKind.PREFERENCE
 }], ["defaultZoomValue", {
-  value: "",
+  value: "page-width",
   kind: OptionKind.VIEWER + OptionKind.PREFERENCE
 }], ["disableHistory", {
   value: false,
