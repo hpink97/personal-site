@@ -49,6 +49,13 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
   .plotbox{display:none}
   .navlinks{display:none !important}
 }
+@media (max-width:600px){
+  .stage{padding-bottom:6px}
+  .stage>div{padding:10px 12px !important;gap:8px !important}
+  .stage svg{max-height:22vh}
+  .stage .mono[style*="grid"]{font-size:11px !important;gap:4px 10px !important;padding-top:8px !important}
+  .lg-m{display:none !important}
+}
 
 /* ---- paper pile + reader ---- */
 .papers{position:relative;display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start}
@@ -93,7 +100,9 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 .v-ctitle{font-family:'Space Grotesk','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:24px;line-height:1.25;letter-spacing:-.01em}
 .v-rule{height:1px;background:#CFCABD;margin:6px 0}
 @media (max-width:900px){.pile{max-width:none;padding-right:26px}.v-body iframe{height:600px}.v-cover{padding:26px 22px;min-height:0}}
-@media (max-width:600px){.v-body,.v-find{display:none}.v-bar{border-bottom:0}}
+@media (max-width:600px){.v-body,.v-find{display:none}.v-bar{border-bottom:0}.viewer.reading .v-body{display:block}.viewer.reading .v-find{display:flex}.v-body{scroll-margin-top:64px}.v-body iframe{height:78svh}}
+.v-load{display:none;justify-content:center;width:calc(100% - 36px);margin:0 18px 16px;background:none;cursor:pointer;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:13px}
+@media (max-width:600px){.v-load{display:flex}.viewer.reading .v-load{display:none}}
 
 /* ---- always-on (time-based) hero network ---- */
 @keyframes hp1{0%{stroke-dashoffset:.16;opacity:1}34%{stroke-dashoffset:-1;opacity:1}35%,100%{stroke-dashoffset:-1;opacity:0}}
@@ -669,7 +678,7 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 </g>
 </g>
 </svg>
-<div class="mono" style="display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 11px; color: #93A79B">
+<div class="mono lg-m" style="display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 11px; color: #93A79B">
 <span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #FF5C8A"></i>5mC</span>
 <span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #E3B23C"></i>5hmC</span>
 <span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 8px; height: 8px; border-radius: 50%; border: 2px solid #93A79B"></i>unmodified C</span>
@@ -818,6 +827,8 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 <div class="v-find mono"><span>jump to</span><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/PIIS2211124720306343.pdf#search=prophase">prophase</a><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/PIIS2211124720306343.pdf#search=actin">actin</a><a target="pdfv" href="pdfjs/web/viewer.html?file=../../papers/PIIS2211124720306343.pdf#search=centrosome">centrosome</a></div>
 </div>
 
+<button type="button" class="btn btn-g v-load">Read it here ↓</button>
+
 <div class="v-body">
 <iframe id="pdfv" name="pdfv" title="Paper PDF viewer" loading="lazy"></iframe>
 </div>
@@ -878,11 +889,17 @@ const frame = document.getElementById('pdfv');
 const local = location.protocol === 'file:';
 let current = 's41598-026-56604-4.pdf', loading = null;
 const viewerUrl = pdf => local ? 'papers/' + pdf + '#view=FitH' : 'pdfjs/web/viewer.html?file=../../papers/' + pdf + '#zoom=page-width';
-// Phones skip the embed entirely (hidden in CSS) and use the Full PDF button instead
+// Phones only load the embed once "Read it here" is tapped
 const phone = matchMedia('(max-width: 600px)');
-const ensureFrame = () => { if (!phone.matches && !frame.getAttribute('src')) frame.src = viewerUrl(current); };
+const viewerBox = document.querySelector('.viewer');
+const ensureFrame = () => { if ((!phone.matches || viewerBox.classList.contains('reading')) && !frame.getAttribute('src')) frame.src = viewerUrl(current); };
 ensureFrame();
 phone.addEventListener('change', ensureFrame);
+document.querySelector('.v-load').addEventListener('click', () => {
+  viewerBox.classList.add('reading');
+  ensureFrame();
+  frame.parentElement.scrollIntoView({ block: 'start', behavior: 'smooth' });
+});
 // Android Chrome downloads PDFs instead of displaying them, so open those links in pdf.js
 if (/Android/.test(navigator.userAgent) && !local) {
   document.querySelectorAll('.v-btns .btn-p').forEach(a => a.href = viewerUrl(a.getAttribute('href').replace('papers/', '')));
