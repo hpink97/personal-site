@@ -93,6 +93,7 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 .v-ctitle{font-family:'Space Grotesk','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:24px;line-height:1.25;letter-spacing:-.01em}
 .v-rule{height:1px;background:#CFCABD;margin:6px 0}
 @media (max-width:900px){.pile{max-width:none;padding-right:26px}.v-body iframe{height:600px}.v-cover{padding:26px 22px;min-height:0}}
+@media (max-width:600px){.v-body,.v-find{display:none}.v-bar{border-bottom:0}}
 
 /* ---- always-on (time-based) hero network ---- */
 @keyframes hp1{0%{stroke-dashoffset:.16;opacity:1}34%{stroke-dashoffset:-1;opacity:1}35%,100%{stroke-dashoffset:-1;opacity:0}}
@@ -818,7 +819,7 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 </div>
 
 <div class="v-body">
-<iframe id="pdfv" name="pdfv" src="pdfjs/web/viewer.html?file=../../papers/s41598-026-56604-4.pdf#zoom=page-width" title="Paper PDF viewer" loading="lazy"></iframe>
+<iframe id="pdfv" name="pdfv" title="Paper PDF viewer" loading="lazy"></iframe>
 </div>
 
 </div>
@@ -876,21 +877,28 @@ const frame = document.getElementById('pdfv');
 // pdf.js can't fetch PDFs over file://, so fall back to the browser's native viewer when opened locally
 const local = location.protocol === 'file:';
 let current = 's41598-026-56604-4.pdf', loading = null;
-if (local) {
-  frame.src = 'papers/' + current + '#view=FitH';
-  document.querySelectorAll('.v-find').forEach(e => e.style.display = 'none');
+const viewerUrl = pdf => local ? 'papers/' + pdf + '#view=FitH' : 'pdfjs/web/viewer.html?file=../../papers/' + pdf + '#zoom=page-width';
+// Phones skip the embed entirely (hidden in CSS) and use the Full PDF button instead
+const phone = matchMedia('(max-width: 600px)');
+const ensureFrame = () => { if (!phone.matches && !frame.getAttribute('src')) frame.src = viewerUrl(current); };
+ensureFrame();
+phone.addEventListener('change', ensureFrame);
+// Android Chrome downloads PDFs instead of displaying them, so open those links in pdf.js
+if (/Android/.test(navigator.userAgent) && !local) {
+  document.querySelectorAll('.v-btns .btn-p').forEach(a => a.href = viewerUrl(a.getAttribute('href').replace('papers/', '')));
 }
+if (local) document.querySelectorAll('.v-find').forEach(e => e.style.display = 'none');
 const viewerApp = () => { try { return frame.contentWindow.PDFViewerApplication; } catch { return null; } };
 document.querySelectorAll('.pp-r').forEach(r => r.addEventListener('change', () => {
   const pdf = r.dataset.pdf;
   if (pdf === current) return;
   current = pdf;
+  if (!frame.getAttribute('src')) return;
   const app = viewerApp();
-  if (local) frame.src = 'papers/' + pdf + '#view=FitH';
-  else if (app) {
+  if (!local && app) {
     const p = loading = app.initializedPromise.then(() => app.open({ url: '../../papers/' + pdf }));
     p.finally(() => { if (loading === p) loading = null; });
-  } else frame.src = 'pdfjs/web/viewer.html?file=../../papers/' + pdf + '#zoom=page-width';
+  } else frame.src = viewerUrl(pdf);
 }));
 document.querySelectorAll('.v-find a').forEach(a => a.addEventListener('click', e => {
   const app = viewerApp();
