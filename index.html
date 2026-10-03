@@ -221,7 +221,7 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 <a class="navlink" href="#papers">papers</a>
 <a class="navlink" href="#contact">contact</a>
 </div>
-<a class="btn btn-p mono" href="Harry_Pink_CV.pdf" download="Harry_Pink_CV.pdf"  style="min-height: 38px; padding: 0 14px; font-size: 13px">CV ↓</a>
+<a class="btn btn-p mono" href="Harry_Pink_CV.pdf" target="_blank" rel="noopener" style="min-height: 38px; padding: 0 14px; font-size: 13px">CV ↗</a>
 </div>
 <div class="prog" style="height: 2px; background: #2FE6B0"></div>
 </nav>
@@ -233,7 +233,7 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 <h1 style="margin: 0; font-size: clamp(38px, 5.6vw, 64px); line-height: 1.04; font-weight: 600">Following the signal — from <em>gene networks</em> to the <em>epigenome</em>.</h1>
 <p style="margin: 0; font-size: 18px; color: #A9BBB1; max-width: 50ch">I'm Harry Pink, a data scientist and computational biologist. My PhD inferred the gene regulatory networks behind lettuce's defence against fungal disease. Today I build machine-learning models that read skin-ageing phenotypes from DNA methylation.</p>
 <div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 6px">
-<a class="btn btn-p" href="Harry_Pink_CV.pdf" download="Harry_Pink_CV.pdf" target="_blank">Download CV (PDF)</a>
+<a class="btn btn-p" href="Harry_Pink_CV.pdf" target="_blank" rel="noopener">View CV (PDF) ↗</a>
 <a class="btn btn-g" href="#experience">Scroll the story ↓</a>
 </div>
 <div class="mono" style="display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 12px; color: #7E9187; padding-top: 10px">
@@ -299,7 +299,7 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 <div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
 <p class="mono" style="margin: 0; font-size: 12.5px; color: #2FE6B0"><span style="color: #7E9187">[01]</span> Experience</p>
 <h2 style="margin: 0; font-size: clamp(30px, 4vw, 42px); line-height: 1.08; font-weight: 600">From plants to pipelines to people.</h2>
-<a class="btn btn-g" href="Harry_Pink_CV.pdf" download="Harry_Pink_CV.pdf" target="_blank" style="align-self: flex-start">Full CV (PDF) ↓</a>
+<a class="btn btn-g" href="Harry_Pink_CV.pdf" target="_blank" rel="noopener" style="align-self: flex-start">Full CV (PDF) ↗</a>
 </div>
 <div style="flex: 2.2 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 0; border-left: 1px solid #1E2A25; padding-left: 28px">
 <div class="rv" style="position: relative; display: flex; flex-direction: column; gap: 6px; padding-bottom: 36px">
@@ -867,7 +867,7 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 <a href="mailto:hpink97@gmail.com" style="border: 1px solid #1E2A25; border-radius: 10px; background: #0D1211; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: #E6F1EB"><span style="font-size: 11px; color: #7E9187">EMAIL</span>hpink97@gmail.com</a>
 <a href="https://www.linkedin.com/in/harry-pink/" target="_blank" rel="noopener" style="border: 1px solid #1E2A25; border-radius: 10px; background: #0D1211; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: #E6F1EB"><span style="font-size: 11px; color: #7E9187">LINKEDIN</span>in/harry-pink ↗</a>
 <a href="https://github.com/hpink97" target="_blank" rel="noopener" style="border: 1px solid #1E2A25; border-radius: 10px; background: #0D1211; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: #E6F1EB"><span style="font-size: 11px; color: #7E9187">GITHUB</span>hpink97 ↗</a>
-<a href="Harry_Pink_CV.pdf" download="Harry_Pink_CV.pdf" target="_blank" style="border: 1px solid #2F5B4C; border-radius: 10px; background: #0B1E18; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: #2FE6B0"><span style="font-size: 11px; color: #7E9187">CV</span>Download PDF ↓</a>
+<a href="Harry_Pink_CV.pdf" target="_blank" rel="noopener" style="border: 1px solid #2F5B4C; border-radius: 10px; background: #0B1E18; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: #2FE6B0"><span style="font-size: 11px; color: #7E9187">CV</span>View PDF ↗</a>
 </div>
 <p class="mono" style="margin: 24px 0 0; font-size: 12px; color: #7E9187; border-top: 1px solid #1E2A25; padding-top: 24px">© Harry Pink · London · </p>
 </div>
@@ -903,6 +903,7 @@ document.querySelector('.v-load').addEventListener('click', () => {
 // Android Chrome downloads PDFs instead of displaying them, so open those links in pdf.js
 if (/Android/.test(navigator.userAgent) && !local) {
   document.querySelectorAll('.v-btns .btn-p').forEach(a => a.href = viewerUrl(a.getAttribute('href').replace('papers/', '')));
+  document.querySelectorAll('a[href="Harry_Pink_CV.pdf"]').forEach(a => a.href = 'pdfjs/web/viewer.html?file=../../Harry_Pink_CV.pdf#zoom=page-width');
 }
 if (local) document.querySelectorAll('.v-find').forEach(e => e.style.display = 'none');
 const viewerApp = () => { try { return frame.contentWindow.PDFViewerApplication; } catch { return null; } };
