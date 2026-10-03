@@ -34,8 +34,16 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 .ds{margin:0;font-size:12.5px;line-height:1.6;color:#93A79B;border-left:2px solid #2F5B4C;padding:2px 0 2px 12px}
 .ds b{color:#2FE6B0;font-weight:500}
 .pubcard:hover{border-color:#2F5B4C}
-@media (max-width:900px){
+@media (max-width:1000px){
   .stage{order:-1;flex-basis:100%;top:58px;background:#07090A;padding-bottom:10px}
+  .stage svg{max-height:40vh}
+  .lg-x{display:none !important}
+  nav{backdrop-filter:none !important;background:#07090A !important}
+  /* stage sits on top of the text here, so time the animation to the band of text visible below it */
+  .grn-sec,.epi-sec{view-timeline-name:none}
+  .grn-sec{timeline-scope:--grn}.epi-sec{timeline-scope:--epi}
+  .grn-sec .steps{view-timeline-name:--grn}.epi-sec .steps{view-timeline-name:--epi}
+  .steps{view-timeline-inset:calc(58px + var(--sh,45vh)) 0px}
   .step{min-height:460px;justify-content:flex-start;padding-top:12px}
   .step:first-child{min-height:460px}
   .plotbox{display:none}
@@ -102,6 +110,7 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 .breath{transform-box:fill-box;transform-origin:center;animation:breath 3.6s ease-out infinite}
 .pulse{stroke-dasharray:.12 2;animation:travel 2.4s linear infinite}
 .spore{animation:fall 3.6s ease-in infinite}
+.off :is(.hp1,.hp2,.hm,.hl,.breath,.pulse,.spore){animation-play-state:paused}
 
 /* ---- scroll-driven chapters (base state = the finished picture) ---- */
 .grn-sec{view-timeline-name:--grn}
@@ -666,7 +675,7 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 <span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 8px; height: 8px; border-radius: 50%; background: #E5484D"></i>H3K9me3 tail mark</span>
 <span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 8px; height: 8px; border-radius: 50%; background: #2FE6B0"></i>H3K27ac tail mark</span>
 </div>
-<div class="mono" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 11px; color: #93A79B; margin-top: -6px">
+<div class="mono lg-x" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 11px; color: #93A79B; margin-top: -6px">
 <span style="color: #7E9187">Pol II:</span>
 <span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #9AA6E6"></i>Rpb1 + clamp</span>
 <span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #E7A3C9"></i>Rpb2</span>
@@ -675,7 +684,7 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 <span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 14px; height: 3px; border-radius: 2px; background: #FF8A5C"></i>RNA</span>
 <span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 8px; height: 8px; border-radius: 50%; background: #E3B23C"></i>phosphorylated CTD</span>
 </div>
-<div class="mono" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 11px; color: #93A79B; margin-top: -6px">
+<div class="mono lg-x" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 11px; color: #93A79B; margin-top: -6px">
 <span style="color: #7E9187">nucleosome:</span>
 <span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #F08FB2"></i>H2A</span>
 <span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #E06E98"></i>H2B</span>
@@ -854,6 +863,14 @@ a{color:#2FE6B0}a:hover{color:#8AF5D5}
 
 </div>
 <script>
+// Looping SVG animations repaint on the main thread every frame, so pause them while off-screen
+const io = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('off', !e.isIntersecting)));
+document.querySelectorAll('.hero-net, #grn .stage').forEach(el => io.observe(el));
+document.querySelectorAll('.story').forEach(s => {
+  const st = s.querySelector('.stage');
+  new ResizeObserver(() => s.style.setProperty('--sh', st.offsetHeight + 'px')).observe(st);
+});
+
 // One shared pdf.js instance: swap documents in place instead of spinning up a viewer + worker per paper
 const frame = document.getElementById('pdfv');
 // pdf.js can't fetch PDFs over file://, so fall back to the browser's native viewer when opened locally
