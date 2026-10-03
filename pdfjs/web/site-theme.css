@@ -1,0 +1,26 @@
+/* Site palette for the embedded pdf.js viewer */
+:root{
+  color-scheme:dark;
+  --main-color:#E6F1EB;
+  --body-bg-color:#161C1A;
+  --progressBar-color:#2FE6B0;
+  --progressBar-bg-color:#0D1211;
+  --progressBar-blend-color:#1B6E56;
+  --scrollbar-color:#2F5B4C;
+  --scrollbar-bg-color:#0D1211;
+  --toolbar-bg-color:#0D1211;
+  --toolbar-border-color:#1E2A25;
+  --sidebar-toolbar-bg-color:#0D1211;
+  --sidebar-narrow-bg-color:#0B100F;
+  --field-color:#E6F1EB;
+  --field-bg-color:#07090A;
+  --field-border-color:#2A3A33;
+  --doorhanger-bg-color:#0D1211;
+  --doorhanger-border-color:#1E2A25;
+  --doorhanger-separator-color:#1E2A25;
+  --dropdown-btn-bg-color:#07090A;
+  --toggled-btn-bg-color:rgb(47 230 176 / 0.18);
+}
+.textLayer .highlight{--highlight-bg-color:rgb(227 178 60 / 0.4);--highlight-selected-bg-color:rgb(47 230 176 / 0.55)}
+/* read-only reading room: hide annotation/editing tools */
+#editorModeButtons,#editorModeSeparator{display:none !important}

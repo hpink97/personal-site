@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harry Pink — Data Scientist &amp; Computational Biologist</title>
+<meta name="description" content="Harry Pink, PhD — data scientist and computational biologist: gene regulatory networks in lettuce defence, and machine learning on DNA methylation for skin ageing.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='9' fill='%23241C08' stroke='%23E3B23C' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07090A}
+a{color:#2FE6B0}a:hover{color:#8AF5D5}
+.hp{font-family:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;color:#E6F1EB;background:#07090A;line-height:1.6;overflow-x:clip;-webkit-font-smoothing:antialiased}
+.hp h1,.hp h2,.hp h3{font-family:'Space Grotesk','Helvetica Neue',Arial,sans-serif;letter-spacing:-0.02em;text-wrap:balance}
+.hp p{text-wrap:pretty}
+.mono{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hp em{font-style:normal;color:#2FE6B0}
+.hp a:focus-visible{outline:2px solid #2FE6B0;outline-offset:3px;border-radius:3px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border-radius:4px;font-size:15px;font-weight:500;text-decoration:none;box-sizing:border-box}
+.btn-p{background:#2FE6B0;color:#04231B}.btn-p:hover{background:#6FF0CA;color:#04231B}
+.btn-g{border:1px solid #2A3A33;color:#E6F1EB}.btn-g:hover{border-color:#7E9187;color:#E6F1EB}
+.navlink{color:#93A79B;text-decoration:none;font-size:13px;padding:10px 4px}
+.navlink:hover{color:#2FE6B0}
+.t-s{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;fill:#93A79B}
+.t-n{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9.5px;font-weight:700}
+.t-s,.t-lab{paint-order:stroke;stroke:#0D1211;stroke-width:4px;stroke-linejoin:round}
+.story{display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start}
+.steps{flex:1 1 340px;min-width:0}
+.stage{flex:1.45 1 520px;min-width:0;position:sticky;top:84px;z-index:2}
+.step{min-height:600px;display:flex;flex-direction:column;justify-content:center;gap:12px;max-width:440px}
+.step:first-child{min-height:520px;justify-content:flex-start;padding-top:24px}
+.step:last-child{min-height:640px}
+.ds{margin:0;font-size:12.5px;line-height:1.6;color:#93A79B;border-left:2px solid #2F5B4C;padding:2px 0 2px 12px}
+.ds b{color:#2FE6B0;font-weight:500}
+.pubcard:hover{border-color:#2F5B4C}
+@media (max-width:900px){
+  .stage{order:-1;flex-basis:100%;top:58px;background:#07090A;padding-bottom:10px}
+  .step{min-height:460px;justify-content:flex-start;padding-top:12px}
+  .step:first-child{min-height:460px}
+  .plotbox{display:none}
+  .navlinks{display:none !important}
+}
+
+/* ---- paper pile + reader ---- */
+.papers{position:relative;display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start}
+.pp-r{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.pile{flex:1 1 300px;max-width:400px;min-width:0;display:flex;flex-direction:column;padding:8px 22px 8px 0;box-sizing:border-box}
+.sheet{position:relative;z-index:1;display:flex;flex-direction:column;gap:8px;height:176px;box-sizing:border-box;padding:16px 30px 16px 18px;border-radius:3px;cursor:pointer;background:#EEEAE0;background-image:linear-gradient(135deg,rgba(255,255,255,.35),rgba(0,0,0,.04) 60%,rgba(0,0,0,.08));color:#1B1D1A;box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 10px 24px rgba(0,0,0,.5),inset 0 0 0 1px rgba(0,0,0,.06);transform:rotate(var(--rot,0deg));transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s,margin-top .4s cubic-bezier(.2,.8,.2,1)}
+.sheet::after{content:"";position:absolute;top:0;right:0;width:18px;height:18px;background:linear-gradient(225deg,#07090A 50%,#CFC9BA 50%);border-bottom-left-radius:3px;box-shadow:-2px 2px 3px rgba(0,0,0,.18)}
+.sheet::before{content:"READING";position:absolute;right:28px;bottom:12px;font:700 9.5px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:.08em;color:#04231B;background:#2FE6B0;padding:4px 7px;border-radius:2px;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.sheet+.sheet{margin-top:-90px}
+.sheet:nth-child(1){--rot:-2.2deg;background:#F1EDE3}
+.sheet:nth-child(2){--rot:1.6deg;background:#ECE7DB}
+.sheet:nth-child(3){--rot:-1deg;background:#EFEBE1}
+.sheet:nth-child(4){--rot:2.4deg;background:#EAE5D8}
+.sheet:nth-child(5){--rot:-1.6deg;background:#F0ECE2}
+.sheet:hover{transform:rotate(var(--rot,0deg)) translate(8px,-6px);box-shadow:0 16px 32px rgba(0,0,0,.6),inset 0 0 0 1px rgba(0,0,0,.06)}
+.sheet-j{display:flex;align-items:center;gap:8px;font-size:10.5px;letter-spacing:.04em;color:#5A5E55}
+.sheet-j i{width:22px;height:5px;border-radius:2px;display:inline-block}
+.sheet-t{font-family:'Space Grotesk','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:14.5px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sheet-a{font-size:11.5px;color:#5A5E55;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sheet-lines{flex:1 1 auto;background:repeating-linear-gradient(180deg,#CFCABD 0 2px,transparent 2px 9px);opacity:.7;border-radius:1px}
+#pp1:checked~.pile label[for=pp1],#pp2:checked~.pile label[for=pp2],#pp3:checked~.pile label[for=pp3],#pp4:checked~.pile label[for=pp4],#pp5:checked~.pile label[for=pp5],.papers:not(:has(.pp-r:checked)) label[for=pp1]{z-index:2;transform:translateX(26px) rotate(0deg);box-shadow:0 18px 40px rgba(0,0,0,.65),0 0 0 2px #2FE6B0}
+#pp1:checked~.pile label[for=pp1]+.sheet,#pp2:checked~.pile label[for=pp2]+.sheet,#pp3:checked~.pile label[for=pp3]+.sheet,#pp4:checked~.pile label[for=pp4]+.sheet,.papers:not(:has(.pp-r:checked)) label[for=pp1]+.sheet{margin-top:16px}
+#pp1:checked~.pile label[for=pp1]::before,#pp2:checked~.pile label[for=pp2]::before,#pp3:checked~.pile label[for=pp3]::before,#pp4:checked~.pile label[for=pp4]::before,#pp5:checked~.pile label[for=pp5]::before,.papers:not(:has(.pp-r:checked)) label[for=pp1]::before{opacity:1;transform:none}
+#pp1:focus-visible~.pile label[for=pp1],#pp2:focus-visible~.pile label[for=pp2],#pp3:focus-visible~.pile label[for=pp3],#pp4:focus-visible~.pile label[for=pp4],#pp5:focus-visible~.pile label[for=pp5]{outline:3px solid #2FE6B0;outline-offset:4px}
+.viewer{flex:2 1 520px;min-width:0}
+.v{display:none;border:1px solid #1E2A25;border-radius:10px;background:#0D1211;overflow:hidden}
+.v1{display:block}
+.papers:has(.pp-r:checked) .v1{display:none}
+#pp1:checked~.viewer .v1,#pp2:checked~.viewer .v2,#pp3:checked~.viewer .v3,#pp4:checked~.viewer .v4,#pp5:checked~.viewer .v5{display:block;animation:vin .35s ease-out}
+@keyframes vin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.v-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px 20px;padding:16px 18px;border-bottom:1px solid #1E2A25}
+.v-meta{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1 1 300px}
+.v-title{font-size:15px;font-weight:600;line-height:1.35;color:#E6F1EB}
+.v-btns{display:flex;flex-wrap:wrap;gap:8px}
+.v-btns .btn{min-height:40px;font-size:12.5px;padding:0 14px}
+.v-body{padding:0;background:#161C1A;min-height:420px;box-sizing:border-box}
+.v-body iframe{display:block;width:100%;height:780px;border:0;background:#161C1A}
+.v-find{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:10px 18px;border-bottom:1px solid #1E2A25;font-size:11.5px;color:#7E9187}
+.v-find a{color:#C3D1C9;text-decoration:none;border:1px solid #22312B;border-radius:999px;padding:3px 10px}
+.v-find a:hover{color:#2FE6B0;border-color:#2F5B4C}
+.v-cover{max-width:620px;margin:0 auto;background:#EEEAE0;color:#1B1D1A;border-radius:4px;padding:40px 44px;display:flex;flex-direction:column;gap:14px;box-shadow:0 12px 30px rgba(0,0,0,.5);box-sizing:border-box;min-height:460px}
+.v-ctitle{font-family:'Space Grotesk','Helvetica Neue',Arial,sans-serif;font-weight:600;font-size:24px;line-height:1.25;letter-spacing:-.01em}
+.v-rule{height:1px;background:#CFCABD;margin:6px 0}
+@media (max-width:900px){.pile{max-width:none;padding-right:26px}.v-body iframe{height:600px}.v-cover{padding:26px 22px;min-height:0}}
+
+/* ---- always-on (time-based) hero network ---- */
+@keyframes hp1{0%{stroke-dashoffset:.16;opacity:1}34%{stroke-dashoffset:-1;opacity:1}35%,100%{stroke-dashoffset:-1;opacity:0}}
+@keyframes hp2{0%,33%{stroke-dashoffset:.16;opacity:0}35%{opacity:1}68%{stroke-dashoffset:-1;opacity:1}69%,100%{stroke-dashoffset:-1;opacity:0}}
+@keyframes hm{0%,28%{fill:#0B1512}36%{fill:#2FE6B0}62%,100%{fill:#0B1512}}
+@keyframes hl{0%,62%{fill:#0B1512}70%{fill:#4C8DFF}92%,100%{fill:#0B1512}}
+@keyframes breath{0%{transform:scale(1);opacity:.7}30%{transform:scale(2.1);opacity:0}100%{transform:scale(2.1);opacity:0}}
+@keyframes travel{0%{stroke-dashoffset:.12}100%{stroke-dashoffset:-1}}
+@keyframes fall{0%{transform:translate(0,0);opacity:0}12%{opacity:1}82%{opacity:1}100%{transform:translate(-14px,52px);opacity:0}}
+@keyframes les{from{transform:scale(0)}to{transform:scale(1)}}
+.hp1{stroke-dasharray:.16 2;opacity:0;animation:hp1 3.6s linear infinite}
+.hp2{stroke-dasharray:.16 2;opacity:0;animation:hp2 3.6s linear infinite}
+.hm{animation:hm 3.6s ease-out infinite}
+.hl{animation:hl 3.6s ease-out infinite}
+.breath{transform-box:fill-box;transform-origin:center;animation:breath 3.6s ease-out infinite}
+.pulse{stroke-dasharray:.12 2;animation:travel 2.4s linear infinite}
+.spore{animation:fall 3.6s ease-in infinite}
+
+/* ---- scroll-driven chapters (base state = the finished picture) ---- */
+.grn-sec{view-timeline-name:--grn}
+.epi-sec{view-timeline-name:--epi}
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes lit{from{opacity:.13}to{opacity:1}}
+@keyframes fin{from{opacity:0}to{opacity:1}}
+@keyframes fout{from{opacity:1}to{opacity:0}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes cover{from{transform:translateX(-500px)}to{transform:translateX(0)}}
+@keyframes cur{from{transform:translateX(0)}to{transform:translateX(500px)}}
+@keyframes demeth{0%{fill:#FF5C8A;stroke:#FF5C8A}50%{fill:#E3B23C;stroke:#E3B23C}100%{fill:#0D1211;stroke:#93A79B}}
+@keyframes n1{from{transform:translate(120px,-12px)}to{transform:translate(0,0)}}
+@keyframes n2{from{transform:translate(85px,14px)}to{transform:translate(0,0)}}
+@keyframes n3{from{transform:translate(-160px,-12px)}to{transform:translate(0,0)}}
+@keyframes n4{from{transform:translate(-190px,14px)}to{transform:translate(0,0)}}
+@keyframes n5{from{transform:translate(-220px,-12px)}to{transform:translate(0,0)}}
+@keyframes dock{from{transform:translateY(-70px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes tet{0%{opacity:0;transform:translateX(0)}12%{opacity:1}88%{opacity:1}100%{opacity:0;transform:translateX(110px)}}
+@keyframes pol{0%{opacity:0;transform:translateX(0)}6%{opacity:1}94%{opacity:1}100%{opacity:0;transform:translateX(170px)}}
+@keyframes nasc{0%{stroke-dashoffset:1;opacity:1}94%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes fadeup{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes beta{from{transform:scaleX(.9)}to{transform:scaleX(.1)}}
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes prog{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.tet0,.pol0,.nasc0{opacity:0}
+.mk-closed{opacity:0}
+.prog{transform:scaleX(0);transform-origin:left}
+.fbox{transform-box:fill-box;transform-origin:left center}
+
+@supports (animation-timeline: view()){
+  .g,.e{animation-duration:auto;animation-timing-function:linear;animation-fill-mode:both}
+  .g{animation-timeline:--grn}
+  .e{animation-timeline:--epi}
+  .draw{animation-name:draw}.lit{animation-name:lit}.fin{animation-name:fin}.fout{animation-name:fout}
+  .grow{animation-name:grow}.cover{animation-name:cover}.cur{animation-name:cur}
+  .demeth{animation-name:demeth}.dock{animation-name:dock}.tet{animation-name:tet}
+  .pol{animation-name:pol}.nasc{animation-name:nasc}.fadeup{animation-name:fadeup}.beta{animation-name:beta}
+  .n1{animation-name:n1}.n2{animation-name:n2}.n3{animation-name:n3}.n4{animation-name:n4}.n5{animation-name:n5}
+  .r-all{animation-range:contain 0% contain 100%}
+  .r-stim{animation-range:contain 0% contain 6%}
+  .r-les{animation-range:contain 22% contain 40%}
+  .lesion{animation-name:les}
+  .r-e0{animation-range:contain 2% contain 12%}
+  .r-hub{animation-range:contain 8% contain 18%}
+  .r-hx0{animation-range:contain 8% contain 12%}
+  .r-hx1{animation-range:contain 10% contain 14%}
+  .r-lv0{animation-range:contain 22% contain 26%}
+  .r-lv1{animation-range:contain 24% contain 28%}
+  .r-deg{animation-range:contain 28% contain 44%}
+  .r-tg{animation-range:contain 46% contain 60%}
+  .r-tgt{animation-range:contain 54% contain 64%}
+  .r-lab{animation-range:contain 58% contain 68%}
+  .r-pulse{animation-range:contain 62% contain 70%}
+  .r-ring{animation-range:contain 80% contain 94%}
+  .q-c0{animation-range:contain 24% contain 32%}
+  .q-c1{animation-range:contain 28% contain 36%}
+  .q-c2{animation-range:contain 32% contain 40%}
+  .q-c3{animation-range:contain 36% contain 44%}
+  .q-c4{animation-range:contain 40% contain 48%}
+  .q-tet{animation-range:contain 22% contain 48%}
+  .q-beta{animation-range:contain 24% contain 48%}
+  .q-bhi{animation-range:contain 40% contain 46%}
+  .q-blo{animation-range:contain 44% contain 50%}
+  .q-mk{animation-range:contain 48% contain 56%}
+  .q-mk2{animation-range:contain 56% contain 64%}
+  .q-open{animation-range:contain 50% contain 64%}
+  .q-chc{animation-range:contain 52% contain 58%}
+  .q-cho{animation-range:contain 56% contain 62%}
+  .q-tf{animation-range:contain 60% contain 68%}
+  .q-pol{animation-range:contain 70% contain 92%}
+  .q-txoff{animation-range:contain 70% contain 74%}
+  .q-txon{animation-range:contain 72% contain 78%}
+  .q-mrna{animation-range:contain 90% contain 100%}
+  .rv{animation:rise ease-out both;animation-timeline:view();animation-range:entry 0% entry 70%}
+  .prog{animation:prog linear both;animation-timeline:scroll(root)}
+}
+@media (prefers-reduced-motion: reduce){
+  .g,.e,.rv,.prog,.hp1,.hp2,.hm,.hl,.breath,.pulse,.spore,.v{animation:none !important}
+  .sheet{transition:none}
+}
+</style>
+<style>html{scroll-behavior:smooth}@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}</style>
+</head>
+<body>
+
+<div class="hp" style="min-height: 100%">
+
+<!-- ================= NAV ================= -->
+<nav style="position: sticky; top: 0; z-index: 20; background: rgba(7,9,10,0.9); backdrop-filter: blur(8px); border-bottom: 1px solid #1E2A25">
+<div style="max-width: 1160px; margin: 0 auto; padding: 0 24px; height: 56px; display: flex; align-items: center; justify-content: space-between; gap: 16px">
+<a href="#top" style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; color: #E6F1EB; text-decoration: none">Harry Pink<span style="color: #2FE6B0">.</span></a>
+<div class="navlinks mono" style="display: flex; align-items: center; gap: 18px">
+<a class="navlink" href="#grn">networks</a>
+<a class="navlink" href="#epi">epigenome</a>
+<a class="navlink" href="#now">now</a>
+<a class="navlink" href="#experience">experience</a>
+<a class="navlink" href="#papers">papers</a>
+<a class="navlink" href="#contact">contact</a>
+</div>
+<a class="btn btn-p mono" href="Harry_Pink_CV.pdf" download="Harry_Pink_CV.pdf"  style="min-height: 38px; padding: 0 14px; font-size: 13px">CV ↓</a>
+</div>
+<div class="prog" style="height: 2px; background: #2FE6B0"></div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header id="top" style="max-width: 1160px; margin: 0 auto; padding: 72px 24px 88px; display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
+<div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 22px">
+<p class="mono" style="margin: 0; font-size: 12.5px; color: #2FE6B0; display: flex; align-items: center; gap: 10px"><span style="width: 7px; height: 7px; border-radius: 50%; background: #2FE6B0; box-shadow: 0 0 0 3px rgba(47,230,176,0.18)"></span>SENIOR DATA SCIENTIST · MITRA BIO · LONDON</p>
+<h1 style="margin: 0; font-size: clamp(38px, 5.6vw, 64px); line-height: 1.04; font-weight: 600">Following the signal — from <em>gene networks</em> to the <em>epigenome</em>.</h1>
+<p style="margin: 0; font-size: 18px; color: #A9BBB1; max-width: 50ch">I'm Harry Pink, a data scientist and computational biologist. My PhD inferred the gene regulatory networks behind lettuce's defence against fungal disease. Today I build machine-learning models that read skin-ageing phenotypes from DNA methylation.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; padding-top: 6px">
+<a class="btn btn-p" href="Harry_Pink_CV.pdf" download="Harry_Pink_CV.pdf" target="_blank">Download CV (PDF)</a>
+<a class="btn btn-g" href="#grn">Scroll the story ↓</a>
+</div>
+<div class="mono" style="display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 12px; color: #7E9187; padding-top: 10px">
+<span>PhD Plant Genetics · York</span>
+<span>BSc Genetics, First · Sussex</span>
+<a href="https://orcid.org/0000-0001-6026-978X" target="_blank" rel="noopener" style="color: #7E9187">ORCID 0000-0001-6026-978X</a>
+</div>
+</div>
+<figure class="hero-net" style="flex: 1 1 420px; min-width: 0; max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px">
+<svg viewBox="0 0 520 500" width="100%" role="img" aria-label="Animated gene regulatory network: pulses travel from a central hub transcription factor through five secondary regulators to ten terminal target genes" style="display: block; height: auto">
+<g fill="none" stroke="#1F2C27" stroke-width="1.5">
+<path d="M 260 250 L 260 130"></path><path d="M 260 250 L 374 213"></path><path d="M 260 250 L 331 347"></path><path d="M 260 250 L 189 347"></path><path d="M 260 250 L 146 213"></path>
+<path d="M 260 130 L 226 38"></path><path d="M 260 130 L 358 58"></path>
+<path d="M 374 213 L 452 152"></path><path d="M 374 213 L 472 284"></path>
+<path d="M 331 347 L 412 402"></path><path d="M 331 347 L 294 462"></path>
+<path d="M 189 347 L 162 442"></path><path d="M 189 347 L 68 348"></path>
+<path d="M 146 213 L 48 216"></path><path d="M 146 213 L 108 98"></path>
+<path d="M 260 130 L 374 213" stroke-dasharray="3 4"></path><path d="M 189 347 L 331 347" stroke-dasharray="3 4"></path>
+</g>
+<g fill="none" stroke-width="3" stroke-linecap="round">
+<path class="hp1" pathLength="1" stroke="#E3B23C" d="M 260 250 L 260 130" style="animation-delay: 0s"></path>
+<path class="hp1" pathLength="1" stroke="#E3B23C" d="M 260 250 L 374 213" style="animation-delay: -2.88s"></path>
+<path class="hp1" pathLength="1" stroke="#E3B23C" d="M 260 250 L 331 347" style="animation-delay: -2.16s"></path>
+<path class="hp1" pathLength="1" stroke="#E3B23C" d="M 260 250 L 189 347" style="animation-delay: -1.44s"></path>
+<path class="hp1" pathLength="1" stroke="#E3B23C" d="M 260 250 L 146 213" style="animation-delay: -0.72s"></path>
+<path class="hp2" pathLength="1" stroke="#2FE6B0" d="M 260 130 L 226 38" style="animation-delay: 0s"></path>
+<path class="hp2" pathLength="1" stroke="#2FE6B0" d="M 260 130 L 358 58" style="animation-delay: 0s"></path>
+<path class="hp2" pathLength="1" stroke="#2FE6B0" d="M 374 213 L 452 152" style="animation-delay: -2.88s"></path>
+<path class="hp2" pathLength="1" stroke="#2FE6B0" d="M 374 213 L 472 284" style="animation-delay: -2.88s"></path>
+<path class="hp2" pathLength="1" stroke="#2FE6B0" d="M 331 347 L 412 402" style="animation-delay: -2.16s"></path>
+<path class="hp2" pathLength="1" stroke="#2FE6B0" d="M 331 347 L 294 462" style="animation-delay: -2.16s"></path>
+<path class="hp2" pathLength="1" stroke="#2FE6B0" d="M 189 347 L 162 442" style="animation-delay: -1.44s"></path>
+<path class="hp2" pathLength="1" stroke="#2FE6B0" d="M 189 347 L 68 348" style="animation-delay: -1.44s"></path>
+<path class="hp2" pathLength="1" stroke="#2FE6B0" d="M 146 213 L 48 216" style="animation-delay: -0.72s"></path>
+<path class="hp2" pathLength="1" stroke="#2FE6B0" d="M 146 213 L 108 98" style="animation-delay: -0.72s"></path>
+</g>
+<g stroke="#4C8DFF" stroke-width="2" fill="#0B1512">
+<circle class="hl" cx="226" cy="38" r="7" style="animation-delay: 0s"></circle><circle class="hl" cx="358" cy="58" r="7" style="animation-delay: 0s"></circle>
+<circle class="hl" cx="452" cy="152" r="7" style="animation-delay: -2.88s"></circle><circle class="hl" cx="472" cy="284" r="7" style="animation-delay: -2.88s"></circle>
+<circle class="hl" cx="412" cy="402" r="7" style="animation-delay: -2.16s"></circle><circle class="hl" cx="294" cy="462" r="7" style="animation-delay: -2.16s"></circle>
+<circle class="hl" cx="162" cy="442" r="7" style="animation-delay: -1.44s"></circle><circle class="hl" cx="68" cy="348" r="7" style="animation-delay: -1.44s"></circle>
+<circle class="hl" cx="48" cy="216" r="7" style="animation-delay: -0.72s"></circle><circle class="hl" cx="108" cy="98" r="7" style="animation-delay: -0.72s"></circle>
+</g>
+<g stroke="#2FE6B0" stroke-width="2" fill="#0B1512">
+<circle class="hm" cx="260" cy="130" r="12" style="animation-delay: 0s"></circle>
+<circle class="hm" cx="374" cy="213" r="12" style="animation-delay: -2.88s"></circle>
+<circle class="hm" cx="331" cy="347" r="12" style="animation-delay: -2.16s"></circle>
+<circle class="hm" cx="189" cy="347" r="12" style="animation-delay: -1.44s"></circle>
+<circle class="hm" cx="146" cy="213" r="12" style="animation-delay: -0.72s"></circle>
+</g>
+<circle class="breath" cx="260" cy="250" r="24" fill="none" stroke="#E3B23C" stroke-width="2"></circle>
+<circle class="breath" cx="260" cy="250" r="24" fill="none" stroke="#E3B23C" stroke-width="2" style="animation-delay: -1.8s"></circle>
+<circle cx="260" cy="250" r="24" fill="#241C08" stroke="#E3B23C" stroke-width="2.5"></circle>
+<text x="260" y="254" text-anchor="middle" class="t-n" fill="#E3B23C">HUB</text>
+</svg>
+<figcaption class="mono" style="font-size: 11.5px; color: #7E9187; text-align: center; line-height: 1.6">Signal flows from a hub transcription factor, through secondary regulators, to terminal target genes.</figcaption>
+</figure>
+</header>
+
+<!-- ================= CHAPTER 01 · GRN ================= -->
+<section id="grn" style="border-top: 1px solid #1E2A25; padding: 96px 0 40px">
+<div style="max-width: 1160px; margin: 0 auto; padding: 0 24px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 720px; padding-bottom: 32px">
+<p class="mono" style="margin: 0; font-size: 12.5px; color: #2FE6B0"><span style="color: #7E9187">[01]</span> PhD · Denby Lab · University of York · 2019–2023</p>
+<h2 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.08; font-weight: 600">Who gives the orders when lettuce fights back.</h2>
+<p style="margin: 0; font-size: 17px; color: #A9BBB1">My PhD used machine learning on time-series gene expression to find the transcription factors that run lettuce's defence against fungal disease, and which are worth breeding for. Scroll to follow the signal from infection to hub to target.</p>
+</div>
+<div class="grn-sec story">
+<div class="steps">
+<div class="step">
+<p class="mono" style="margin: 0; font-size: 12px; color: #E3B23C">01 / 04 · time series</p>
+<h3 style="margin: 0; font-size: 26px; line-height: 1.2; font-weight: 600">Infection, filmed every three hours</h3>
+<p style="margin: 0; font-size: 16px; color: #C3D1C9">I RNA-sequenced infected lettuce leaves every 3 hours. The hub regulators switched on <b style="color: #E6F1EB">before any lesion was visible</b>.</p>
+<p class="ds mono"><b>in the data</b> · 14 timepoints from 9 to 48 h, so you can see which genes move first instead of guessing.</p>
+</div>
+<div class="step">
+<p class="mono" style="margin: 0; font-size: 12px; color: #E3B23C">02 / 04 · inference</p>
+<h3 style="margin: 0; font-size: 26px; line-height: 1.2; font-weight: 600">Random forests draw the arrows</h3>
+<p style="margin: 0; font-size: 16px; color: #C3D1C9">Random forests learned which transcription factors predict each gene's expression across four datasets, drawing the regulator→gene arrows.</p>
+<p class="ds mono"><b>in the data</b> · Ranking each TF by feature importance gave a network of 10,947 regulator→gene links.</p>
+</div>
+<div class="step">
+<p class="mono" style="margin: 0; font-size: 12px; color: #E3B23C">03 / 04 · hubs → targets</p>
+<h3 style="margin: 0; font-size: 26px; line-height: 1.2; font-weight: 600">A few hubs carry the signal</h3>
+<p style="margin: 0; font-size: 16px; color: #C3D1C9">A few hubs control hundreds of genes, and their targets match known biology: defence hormones, cell death, antifungal compounds.</p>
+<p class="ds mono"><b>in the data</b> · Sorting regulators by how many genes they control cut thousands of candidates to a handful worth testing.</p>
+</div>
+<div class="step">
+<p class="mono" style="margin: 0; font-size: 12px; color: #E3B23C">04 / 04 · validation</p>
+<h3 style="margin: 0; font-size: 26px; line-height: 1.2; font-weight: 600">Then I tested the predictions</h3>
+<p style="margin: 0; font-size: 16px; color: #C3D1C9"><span style="color: #FF5C8A">LsNAC53</span> dampens defence and switches on its predicted targets; <span style="color: #2FE6B0">LsBOS1</span> boosts resistance.</p>
+<p class="ds mono"><b>in the data</b> · The network made the predictions; experiments in the plant confirmed them.</p>
+<div class="mono" style="display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 13px; padding-top: 4px">
+<a href="https://www.biorxiv.org/content/10.1101/2023.07.19.549542v1" target="_blank" rel="noopener">Preprint · bioRxiv 2023 ↗</a>
+<a href="https://etheses.whiterose.ac.uk/id/eprint/34510/" target="_blank" rel="noopener">PhD thesis ↗</a>
+</div>
+</div>
+</div>
+
+<div class="stage">
+<div style="border: 1px solid #1E2A25; border-radius: 10px; background: #0D1211; padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 12px">
+<svg viewBox="0 0 640 470" width="100%" role="img" aria-label="A Botrytis cinerea conidiophore sheds spores onto a lettuce leaf, causing a lesion; the infection signal flows to three hub transcription factors, LsERF1, LsNAC53 and LsBHLH, and from them to their predicted target genes" style="display: block; height: auto">
+<defs>
+<linearGradient id="leafG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B7E07A"></stop><stop offset="0.55" stop-color="#7CC04A"></stop><stop offset="1" stop-color="#4E9A34"></stop></linearGradient>
+<radialGradient id="lesG"><stop offset="0" stop-color="#3B2614"></stop><stop offset="0.6" stop-color="#6B4628"></stop><stop offset="1" stop-color="#8A6A2E" stop-opacity="0.9"></stop></radialGradient>
+</defs>
+<!-- edges: leaf → hubs → targets (dim base) -->
+<g fill="none" stroke="#1F2C27" stroke-width="1.5">
+<path d="M 300 182 L 130 240"></path><path d="M 300 182 L 320 240"></path><path d="M 300 182 L 510 240"></path>
+<path d="M 130 240 L 70 370"></path><path d="M 130 240 L 100 370"></path><path d="M 130 240 L 130 370"></path><path d="M 130 240 L 160 370"></path><path d="M 130 240 L 190 370"></path>
+<path d="M 320 240 L 280 370"></path><path d="M 320 240 L 320 370"></path><path d="M 320 240 L 360 370"></path>
+<path d="M 510 240 L 450 370"></path><path d="M 510 240 L 480 370"></path><path d="M 510 240 L 510 370"></path><path d="M 510 240 L 540 370"></path><path d="M 510 240 L 570 370"></path>
+</g>
+<g fill="none" stroke="#E3B23C" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1">
+<path class="g draw r-e0" pathLength="1" d="M 300 182 L 130 240"></path><path class="g draw r-e0" pathLength="1" d="M 300 182 L 320 240"></path><path class="g draw r-e0" pathLength="1" d="M 300 182 L 510 240"></path>
+</g>
+<g fill="none" stroke="#4C8DFF" stroke-width="2" stroke-linecap="round" stroke-dasharray="1">
+<path class="g draw r-tg" pathLength="1" d="M 130 240 L 70 370"></path><path class="g draw r-tg" pathLength="1" d="M 130 240 L 100 370"></path><path class="g draw r-tg" pathLength="1" d="M 130 240 L 130 370"></path><path class="g draw r-tg" pathLength="1" d="M 130 240 L 160 370"></path><path class="g draw r-tg" pathLength="1" d="M 130 240 L 190 370"></path>
+<path class="g draw r-tg" pathLength="1" d="M 320 240 L 280 370"></path><path class="g draw r-tg" pathLength="1" d="M 320 240 L 320 370"></path><path class="g draw r-tg" pathLength="1" d="M 320 240 L 360 370"></path>
+<path class="g draw r-tg" pathLength="1" d="M 510 240 L 450 370"></path><path class="g draw r-tg" pathLength="1" d="M 510 240 L 480 370"></path><path class="g draw r-tg" pathLength="1" d="M 510 240 L 510 370"></path><path class="g draw r-tg" pathLength="1" d="M 510 240 L 540 370"></path><path class="g draw r-tg" pathLength="1" d="M 510 240 L 570 370"></path>
+</g>
+<g class="g fin r-pulse" fill="none" stroke="#F4FFF9" stroke-width="3.5" stroke-linecap="round">
+<path class="pulse" pathLength="1" d="M 300 182 L 130 240" style="animation-delay: 0s"></path>
+<path class="pulse" pathLength="1" d="M 300 182 L 320 240" style="animation-delay: -0.8s"></path>
+<path class="pulse" pathLength="1" d="M 300 182 L 510 240" style="animation-delay: -1.6s"></path>
+<path class="pulse" pathLength="1" d="M 130 240 L 160 370" style="animation-delay: -1.2s"></path>
+<path class="pulse" pathLength="1" d="M 320 240 L 280 370" style="animation-delay: -0.4s"></path>
+<path class="pulse" pathLength="1" d="M 320 240 L 360 370" style="animation-delay: -2s"></path>
+<path class="pulse" pathLength="1" d="M 510 240 L 480 370" style="animation-delay: -0.9s"></path>
+<path class="pulse" pathLength="1" d="M 510 240 L 570 370" style="animation-delay: -1.8s"></path>
+</g>
+
+<g transform="translate(0 22) translate(300 80) scale(1.2) translate(-300 -80)">
+<!-- lettuce leaf -->
+<path d="M 150 93 L 112 99" stroke="#9CCB62" stroke-width="7" stroke-linecap="round"></path>
+<path d="M 444 92 Q 466 98 438 102 Q 452 109 421 112 Q 426 120 394 121 Q 390 131 360 129 Q 347 139 320 135 Q 300 144 280 138 Q 253 145 240 136 Q 210 141 206 131 Q 174 132 179 121 Q 148 118 162 107 Q 134 101 156 92 Q 134 83 162 77 Q 148 66 179 63 Q 174 52 206 53 Q 210 43 240 48 Q 253 39 280 46 Q 300 40 320 49 Q 347 45 360 55 Q 390 53 394 63 Q 426 64 421 72 Q 452 75 438 82 Q 466 86 444 92 Z" fill="url(#leafG)" stroke="#3E7F2A" stroke-width="1.5"></path>
+<path d="M 432 92 Q 446 96 428 99 Q 436 105 414 106 Q 414 113 390 113 Q 384 121 360 119 Q 346 126 322 123 Q 302 130 282 125 Q 258 131 244 124 Q 218 127 214 119 Q 190 118 194 110 Q 170 106 182 99 Q 168 92 182 86" fill="none" stroke="#3E7F2A" stroke-opacity="0.45" stroke-width="1.2"></path>
+<path d="M 150 93 Q 300 84 446 92" fill="none" stroke="#E4F5C4" stroke-width="3.5" stroke-linecap="round"></path>
+<g fill="none" stroke="#E4F5C4" stroke-opacity="0.8" stroke-width="1.6" stroke-linecap="round">
+<path d="M 200 90 Q 214 72 226 58"></path><path d="M 200 91 Q 214 112 228 128"></path>
+<path d="M 250 88 Q 264 70 276 54"></path><path d="M 250 89 Q 264 112 278 132"></path>
+<path d="M 300 87 Q 314 70 326 56"></path><path d="M 300 88 Q 314 110 326 128"></path>
+<path d="M 400 89 Q 412 76 420 68"></path><path d="M 400 90 Q 412 104 420 114"></path>
+</g>
+<text x="92" y="126" class="t-s" style="fill: #9CCB62; font-style: italic">Lactuca sativa</text>
+
+<!-- lesion grows as infection progresses -->
+<g class="g lesion r-les" style="transform-box: fill-box; transform-origin: center">
+<ellipse cx="356" cy="74" rx="30" ry="15" fill="#D8D25E" fill-opacity="0.5"></ellipse>
+<ellipse cx="356" cy="74" rx="21" ry="10" fill="url(#lesG)"></ellipse>
+<g fill="none" stroke="#D9D3C2" stroke-opacity="0.7" stroke-width="0.9">
+<path d="M 356 74 q 8 -3 16 1 t 10 -2"></path><path d="M 356 74 q -8 -4 -15 0 t -10 1"></path><path d="M 356 74 q 4 5 12 6"></path><path d="M 356 74 q -5 5 -13 5"></path>
+</g>
+</g>
+
+<!-- Botrytis cinerea conidiophore with grape-like conidia clusters -->
+<g>
+<path d="M 356 74 C 357 56 360 38 362 22" fill="none" stroke="#BEB8A6" stroke-width="3" stroke-linecap="round"></path>
+<g fill="none" stroke="#BEB8A6" stroke-width="2" stroke-linecap="round">
+<path d="M 362 24 Q 354 18 346 16"></path><path d="M 362 22 Q 360 14 356 6"></path><path d="M 362 22 Q 368 14 372 7"></path><path d="M 362 24 Q 372 20 380 18"></path>
+</g>
+<g fill="#D6D1C1" stroke="#8E8A7E" stroke-width="0.8">
+<ellipse cx="343" cy="15" rx="3.4" ry="2.8"></ellipse><ellipse cx="340" cy="20" rx="3.4" ry="2.8"></ellipse><ellipse cx="346" cy="11" rx="3.4" ry="2.8"></ellipse><ellipse cx="338" cy="13" rx="3.4" ry="2.8"></ellipse>
+<ellipse cx="355" cy="4" rx="3.4" ry="2.8"></ellipse><ellipse cx="351" cy="7" rx="3.4" ry="2.8"></ellipse><ellipse cx="359" cy="2" rx="3.4" ry="2.8"></ellipse>
+<ellipse cx="373" cy="4" rx="3.4" ry="2.8"></ellipse><ellipse cx="377" cy="7" rx="3.4" ry="2.8"></ellipse><ellipse cx="369" cy="2" rx="3.4" ry="2.8"></ellipse>
+<ellipse cx="383" cy="17" rx="3.4" ry="2.8"></ellipse><ellipse cx="386" cy="21" rx="3.4" ry="2.8"></ellipse><ellipse cx="381" cy="12" rx="3.4" ry="2.8"></ellipse><ellipse cx="388" cy="14" rx="3.4" ry="2.8"></ellipse>
+</g>
+<g fill="#D6D1C1" stroke="#8E8A7E" stroke-width="0.8">
+<ellipse class="spore" cx="386" cy="22" rx="3" ry="2.5" style="animation-delay: 0s"></ellipse>
+<ellipse class="spore" cx="340" cy="22" rx="3" ry="2.5" style="animation-delay: -1.3s"></ellipse>
+<ellipse class="spore" cx="378" cy="10" rx="3" ry="2.5" style="animation-delay: -2.4s"></ellipse>
+</g>
+</g>
+</g>
+<g class="g lit r-stim">
+<text x="424" y="26" style="font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; font-style: italic" fill="#E6F1EB">Botrytis cinerea</text>
+<text x="424" y="42" class="t-s">grey mould</text>
+<text x="424" y="56" class="t-s">sampled every 3 h · 9–48 hpi</text>
+</g>
+
+<!-- validation ring -->
+<g class="g fin r-ring">
+<circle cx="320" cy="240" r="31" fill="none" stroke="#FF5C8A" stroke-width="2" stroke-dasharray="4 3"></circle>
+<circle cx="346" cy="216" r="8" fill="#FF5C8A"></circle><text x="346" y="219.5" text-anchor="middle" class="t-n" fill="#2A0712" style="stroke: none">−</text>
+<text x="360" y="212" class="t-s" style="fill: #FF5C8A">negative regulator · validated</text>
+</g>
+<!-- hubs -->
+<g class="g lit r-hub">
+<g fill="#241C08" stroke="#E3B23C" stroke-width="2.5">
+<circle cx="130" cy="240" r="22"></circle><circle cx="320" cy="240" r="22"></circle><circle cx="510" cy="240" r="22"></circle>
+</g>
+<text x="130" y="243.5" text-anchor="middle" class="t-n" fill="#E3B23C" style="stroke: none">ERF</text>
+<text x="320" y="243.5" text-anchor="middle" class="t-n" fill="#E3B23C" style="stroke: none">NAC</text>
+<text x="510" y="243.5" text-anchor="middle" class="t-n" fill="#E3B23C" style="stroke: none">bHLH</text>
+<text x="130" y="282" text-anchor="middle" class="t-n t-lab" fill="#E6F1EB" style="font-size: 12px">LsERF1</text>
+<text x="320" y="282" text-anchor="middle" class="t-n t-lab" fill="#E6F1EB" style="font-size: 12px">LsNAC53</text>
+<text x="510" y="282" text-anchor="middle" class="t-n t-lab" fill="#E6F1EB" style="font-size: 12px">LsBHLH</text>
+</g>
+<!-- targets -->
+<g class="g lit r-tgt">
+<g fill="#10234A" stroke="#4C8DFF" stroke-width="2">
+<circle cx="70" cy="370" r="7"></circle><circle cx="100" cy="370" r="7"></circle><circle cx="130" cy="370" r="7"></circle><circle cx="160" cy="370" r="7"></circle><circle cx="190" cy="370" r="7"></circle>
+<circle cx="280" cy="370" r="7"></circle><circle cx="320" cy="370" r="7"></circle><circle cx="360" cy="370" r="7"></circle>
+<circle cx="450" cy="370" r="7"></circle><circle cx="480" cy="370" r="7"></circle><circle cx="510" cy="370" r="7"></circle><circle cx="540" cy="370" r="7"></circle><circle cx="570" cy="370" r="7"></circle>
+</g>
+</g>
+<g class="g fin r-lab">
+<text x="280" y="396" text-anchor="middle" class="t-s" style="fill: #C3D1C9">RBOHD</text>
+<text x="320" y="396" text-anchor="middle" class="t-s" style="fill: #C3D1C9">NSL1</text>
+<text x="360" y="396" text-anchor="middle" class="t-s" style="fill: #C3D1C9">NSL2</text>
+<text transform="translate(453 386) rotate(90)" class="t-s" style="fill: #C3D1C9">FPS1</text>
+<text transform="translate(483 386) rotate(90)" class="t-s" style="fill: #C3D1C9">GAS1</text>
+<text transform="translate(513 386) rotate(90)" class="t-s" style="fill: #C3D1C9">GAS2</text>
+<text transform="translate(543 386) rotate(90)" class="t-s" style="fill: #C3D1C9">GAO</text>
+<text transform="translate(573 386) rotate(90)" class="t-s" style="fill: #C3D1C9">COS1</text>
+<path d="M 66 420 L 194 420" stroke="#2A3A33" stroke-width="1.5"></path>
+<text x="130" y="438" text-anchor="middle" class="t-s">jasmonate / ethylene</text><text x="130" y="452" text-anchor="middle" class="t-s">response genes</text>
+<path d="M 276 420 L 364 420" stroke="#2A3A33" stroke-width="1.5"></path>
+<text x="320" y="438" text-anchor="middle" class="t-s">ROS burst ·</text><text x="320" y="452" text-anchor="middle" class="t-s">cell death</text>
+<path d="M 446 420 L 574 420" stroke="#2A3A33" stroke-width="1.5"></path>
+<text x="510" y="438" text-anchor="middle" class="t-s">antifungal sesquiterpene</text><text x="510" y="452" text-anchor="middle" class="t-s">lactone biosynthesis</text>
+</g>
+</svg>
+<div class="mono" style="display: grid; grid-template-columns: minmax(0, 140px) minmax(0, 1fr); gap: 10px 12px; align-items: center; font-size: 12px; white-space: nowrap; border-top: 1px solid #1E2A25; padding-top: 14px">
+<span style="color: #7E9187">hub TF expression</span>
+<span style="position: relative; height: 18px"><span class="g fout r-hx0 mk-closed" style="position: absolute; left: 0; top: 0; color: #7E9187">baseline</span><span class="g fin r-hx1" style="position: absolute; left: 0; top: 0; color: #E3B23C">rising ↑ · already responding</span></span>
+<span style="color: #7E9187">visible lesion</span>
+<span style="position: relative; height: 18px"><span class="g fout r-lv0 mk-closed" style="position: absolute; left: 0; top: 0; color: #7E9187">none yet</span><span class="g fin r-lv1" style="position: absolute; left: 0; top: 0; color: #C9A06A">spreading</span></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= CHAPTER 02 · EPIGENOME ================= -->
+<section id="epi" style="border-top: 1px solid #1E2A25; padding: 96px 0 40px">
+<div style="max-width: 1160px; margin: 0 auto; padding: 0 24px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 720px; padding-bottom: 32px">
+<p class="mono" style="margin: 0; font-size: 12.5px; color: #2FE6B0"><span style="color: #7E9187">[02]</span> biomodal → Mitra Bio · 2023–now</p>
+<h2 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.08; font-weight: 600">How a silenced gene switches back on.</h2>
+<p style="margin: 0; font-size: 17px; color: #A9BBB1">DNA methylation is one of the switches that decides whether a stretch of genome can be read. Scroll to watch a promoter lose its methyl marks, its chromatin open, and its gene get transcribed — the biology underneath the data I now model.</p>
+</div>
+<div class="epi-sec story">
+<div class="steps">
+<div class="step">
+<p class="mono" style="margin: 0; font-size: 12px; color: #FF5C8A">01 / 04 · silenced</p>
+<h3 style="margin: 0; font-size: 26px; line-height: 1.2; font-weight: 600">Methylated and packed away</h3>
+<p style="margin: 0; font-size: 16px; color: #C3D1C9">Methyl marks (<span style="color: #FF5C8A">5mC</span>) on a promoter pack the DNA tightly. The gene stays silent.</p>
+<p class="ds mono"><b>in the data</b> · Each CpG becomes a number between 0 and 1, with millions of them per sample.</p>
+</div>
+<div class="step">
+<p class="mono" style="margin: 0; font-size: 12px; color: #E3B23C">02 / 04 · demethylation</p>
+<h3 style="margin: 0; font-size: 26px; line-height: 1.2; font-weight: 600">The methyl marks come off</h3>
+<p style="margin: 0; font-size: 16px; color: #C3D1C9">TET enzymes oxidise the marks away, via <span style="color: #E3B23C">5hmC</span>, back to a plain C.</p>
+<p class="ds mono"><b>in the data</b> · At biomodal I wrote the tooling that separates 5mC from 5hmC within the same sequencing reads.</p>
+</div>
+<div class="step">
+<p class="mono" style="margin: 0; font-size: 12px; color: #2FE6B0">03 / 04 · chromatin opens</p>
+<h3 style="margin: 0; font-size: 26px; line-height: 1.2; font-weight: 600">The chromatin opens up</h3>
+<p style="margin: 0; font-size: 16px; color: #C3D1C9">Nucleosomes slide apart and transcription factors can bind.</p>
+<p class="ds mono"><b>in the data</b> · A single CpG is noisy, but thousands shifting together give a model something to learn.</p>
+</div>
+<div class="step">
+<p class="mono" style="margin: 0; font-size: 12px; color: #4C8DFF">04 / 04 · transcription</p>
+<h3 style="margin: 0; font-size: 26px; line-height: 1.2; font-weight: 600">The gene is read</h3>
+<p style="margin: 0; font-size: 16px; color: #C3D1C9">RNA polymerase reads the gene, and the mRNA heads out to make protein.</p>
+<p class="ds mono"><b>in the data</b> · These shifts track age. At Mitra Bio I turn them into measurements of skin ageing.</p>
+<p class="mono" style="margin: 0; font-size: 11.5px; color: #7E9187; line-height: 1.6">Shown in sequence for clarity. In real cells these steps are coupled, and the order varies from locus to locus.</p>
+</div>
+</div>
+
+<div class="stage">
+<div style="border: 1px solid #1E2A25; border-radius: 10px; background: #0D1211; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+<svg viewBox="0 0 600 300" width="100%" role="img" aria-label="A promoter loses its CpG methylation, its nucleosomes spread apart from a compact heterochromatin fibre into open euchromatin, a transcription factor binds, RNA polymerase II transcribes the gene and a capped, polyadenylated mRNA is released" style="display: block; height: auto">
+<rect x="186" y="150" width="178" height="100" rx="8" fill="#2FE6B0" fill-opacity="0.04" stroke="#22312B" stroke-dasharray="3 4"></rect>
+<text x="192" y="294" class="t-s">promoter CpGs</text>
+<text x="404" y="294" class="t-s">gene body →</text>
+<path d="M 0 230 Q 22 241 44 230 T 88 230 T 132 230 T 176 230 T 220 230 T 264 230 T 308 230 T 352 230 T 396 230 T 440 230 T 484 230 T 528 230 T 572 230 T 616 230" fill="none" stroke="#9FB3A8" stroke-width="2"></path>
+<path d="M 0 230 Q 22 219 44 230 T 88 230 T 132 230 T 176 230 T 220 230 T 264 230 T 308 230 T 352 230 T 396 230 T 440 230 T 484 230 T 528 230 T 572 230 T 616 230" fill="none" stroke="#5E7469" stroke-width="2"></path>
+<path d="M 356 226 L 356 152 L 386 152" fill="none" stroke="#E6F1EB" stroke-width="1.6"></path>
+<path d="M 386 147 L 395 152 L 386 157 Z" fill="#E6F1EB"></path>
+<text x="362" y="144" class="t-s" style="fill: #E6F1EB">TSS</text>
+<g stroke="#7E9187" stroke-width="1.5">
+<path d="M 205 226 L 205 177"></path><path d="M 228 226 L 228 177"></path><path d="M 251 226 L 251 177"></path><path d="M 274 226 L 274 177"></path><path d="M 297 226 L 297 177"></path>
+</g>
+<g stroke-width="2.2" fill="#0D1211" stroke="#93A79B">
+<circle class="e demeth q-c0" cx="205" cy="170" r="7"></circle>
+<circle class="e demeth q-c1" cx="228" cy="170" r="7"></circle>
+<circle class="e demeth q-c2" cx="251" cy="170" r="7"></circle>
+<circle class="e demeth q-c3" cx="274" cy="170" r="7"></circle>
+<circle class="e demeth q-c4" cx="297" cy="170" r="7"></circle>
+</g>
+<g class="e fadeup q-mrna">
+<path d="M 330 70 q 14 -12 28 0 t 28 0 t 28 0 t 28 0 t 28 0 t 28 0 t 28 0 t 28 0" fill="none" stroke="#4C8DFF" stroke-width="3" stroke-linecap="round"></path>
+<circle cx="324" cy="70" r="6" fill="#E3B23C"></circle>
+<text x="324" y="50" text-anchor="middle" class="t-s" style="fill: #E3B23C">5′ cap</text>
+<text x="558" y="74" class="t-s" style="fill: #4C8DFF; font-weight: 700">AAAA</text>
+<text x="596" y="50" text-anchor="end" class="t-s" style="fill: #4C8DFF">3′ poly(A)</text>
+<text x="442" y="104" text-anchor="middle" class="t-s" style="fill: #C3D1C9">mature mRNA → cytoplasm</text>
+</g>
+<g class="e dock q-tf">
+<rect x="310" y="200" width="32" height="26" rx="8" fill="#2FE6B0"></rect>
+<text x="326" y="216.5" text-anchor="middle" class="t-n" fill="#04231B">TF</text>
+</g>
+<g transform="translate(50 230)"><g class="e n1 q-open">
+<path d="M 27 -16 C 38 -36, -42 -30, -27 18" fill="none" stroke="#2B5F78" stroke-width="5" stroke-linecap="round"></path>
+<circle cx="-12" cy="-15" r="12" fill="#8E3D60"></circle><circle cx="12" cy="-15" r="12" fill="#A24A71"></circle>
+<circle cx="-11" cy="-5" r="13" fill="#D45C88" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="11" cy="-5" r="13" fill="#F4A6C2" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="-11" cy="13" r="13" fill="#F08FB2" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="11" cy="13" r="13" fill="#E06E98" stroke="#0D1211" stroke-width="1.2"></circle>
+<g fill="#FFFFFF" fill-opacity="0.38"><ellipse cx="-15" cy="-10" rx="4.5" ry="2.6"></ellipse><ellipse cx="7" cy="-10" rx="4.5" ry="2.6"></ellipse><ellipse cx="-15" cy="8" rx="4.5" ry="2.6"></ellipse><ellipse cx="7" cy="8" rx="4.5" ry="2.6"></ellipse></g>
+<path d="M -30 0 C -22 18, 16 6, 27 -16" fill="none" stroke="#6EC6E8" stroke-width="5" stroke-linecap="round"></path>
+<path d="M -27 18 C -16 34, 18 24, 30 0" fill="none" stroke="#6EC6E8" stroke-width="5" stroke-linecap="round"></path>
+<path d="M -16 -18 q -5 -4 -4 -9 t -5 -5" fill="none" stroke="#D45C88" stroke-width="1.6" stroke-linecap="round"></path>
+<g class="e fout q-mk mk-closed"><path d="M 24 -10 L 24 8" stroke="#E3B23C" stroke-width="4" stroke-linecap="round"></path><circle cx="24" cy="-11" r="4" fill="#E3B23C"></circle><circle cx="24" cy="9" r="4" fill="#E3B23C"></circle><circle cx="-25" cy="-32" r="3.8" fill="#E5484D"></circle></g>
+<g class="e fin q-mk2"><circle cx="-25" cy="-32" r="3.8" fill="#2FE6B0"></circle></g>
+</g></g>
+<g transform="translate(125 230)"><g class="e n2 q-open">
+<path d="M 27 -16 C 38 -36, -42 -30, -27 18" fill="none" stroke="#2B5F78" stroke-width="5" stroke-linecap="round"></path>
+<circle cx="-12" cy="-15" r="12" fill="#8E3D60"></circle><circle cx="12" cy="-15" r="12" fill="#A24A71"></circle>
+<circle cx="-11" cy="-5" r="13" fill="#D45C88" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="11" cy="-5" r="13" fill="#F4A6C2" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="-11" cy="13" r="13" fill="#F08FB2" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="11" cy="13" r="13" fill="#E06E98" stroke="#0D1211" stroke-width="1.2"></circle>
+<g fill="#FFFFFF" fill-opacity="0.38"><ellipse cx="-15" cy="-10" rx="4.5" ry="2.6"></ellipse><ellipse cx="7" cy="-10" rx="4.5" ry="2.6"></ellipse><ellipse cx="-15" cy="8" rx="4.5" ry="2.6"></ellipse><ellipse cx="7" cy="8" rx="4.5" ry="2.6"></ellipse></g>
+<path d="M -30 0 C -22 18, 16 6, 27 -16" fill="none" stroke="#6EC6E8" stroke-width="5" stroke-linecap="round"></path>
+<path d="M -27 18 C -16 34, 18 24, 30 0" fill="none" stroke="#6EC6E8" stroke-width="5" stroke-linecap="round"></path>
+<path d="M -16 -18 q -5 -4 -4 -9 t -5 -5" fill="none" stroke="#D45C88" stroke-width="1.6" stroke-linecap="round"></path>
+<g class="e fout q-mk mk-closed"><path d="M 24 -10 L 24 8" stroke="#E3B23C" stroke-width="4" stroke-linecap="round"></path><circle cx="24" cy="-11" r="4" fill="#E3B23C"></circle><circle cx="24" cy="9" r="4" fill="#E3B23C"></circle><circle cx="-25" cy="-32" r="3.8" fill="#E5484D"></circle></g>
+<g class="e fin q-mk2"><circle cx="-25" cy="-32" r="3.8" fill="#2FE6B0"></circle></g>
+</g></g>
+<g transform="translate(410 230)"><g class="e n3 q-open">
+<path d="M 27 -16 C 38 -36, -42 -30, -27 18" fill="none" stroke="#2B5F78" stroke-width="5" stroke-linecap="round"></path>
+<circle cx="-12" cy="-15" r="12" fill="#8E3D60"></circle><circle cx="12" cy="-15" r="12" fill="#A24A71"></circle>
+<circle cx="-11" cy="-5" r="13" fill="#D45C88" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="11" cy="-5" r="13" fill="#F4A6C2" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="-11" cy="13" r="13" fill="#F08FB2" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="11" cy="13" r="13" fill="#E06E98" stroke="#0D1211" stroke-width="1.2"></circle>
+<g fill="#FFFFFF" fill-opacity="0.38"><ellipse cx="-15" cy="-10" rx="4.5" ry="2.6"></ellipse><ellipse cx="7" cy="-10" rx="4.5" ry="2.6"></ellipse><ellipse cx="-15" cy="8" rx="4.5" ry="2.6"></ellipse><ellipse cx="7" cy="8" rx="4.5" ry="2.6"></ellipse></g>
+<path d="M -30 0 C -22 18, 16 6, 27 -16" fill="none" stroke="#6EC6E8" stroke-width="5" stroke-linecap="round"></path>
+<path d="M -27 18 C -16 34, 18 24, 30 0" fill="none" stroke="#6EC6E8" stroke-width="5" stroke-linecap="round"></path>
+<path d="M -16 -18 q -5 -4 -4 -9 t -5 -5" fill="none" stroke="#D45C88" stroke-width="1.6" stroke-linecap="round"></path>
+<g class="e fout q-mk mk-closed"><path d="M 24 -10 L 24 8" stroke="#E3B23C" stroke-width="4" stroke-linecap="round"></path><circle cx="24" cy="-11" r="4" fill="#E3B23C"></circle><circle cx="24" cy="9" r="4" fill="#E3B23C"></circle><circle cx="-25" cy="-32" r="3.8" fill="#E5484D"></circle></g>
+<g class="e fin q-mk2"><circle cx="-25" cy="-32" r="3.8" fill="#2FE6B0"></circle></g>
+</g></g>
+<g transform="translate(480 230)"><g class="e n4 q-open">
+<path d="M 27 -16 C 38 -36, -42 -30, -27 18" fill="none" stroke="#2B5F78" stroke-width="5" stroke-linecap="round"></path>
+<circle cx="-12" cy="-15" r="12" fill="#8E3D60"></circle><circle cx="12" cy="-15" r="12" fill="#A24A71"></circle>
+<circle cx="-11" cy="-5" r="13" fill="#D45C88" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="11" cy="-5" r="13" fill="#F4A6C2" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="-11" cy="13" r="13" fill="#F08FB2" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="11" cy="13" r="13" fill="#E06E98" stroke="#0D1211" stroke-width="1.2"></circle>
+<g fill="#FFFFFF" fill-opacity="0.38"><ellipse cx="-15" cy="-10" rx="4.5" ry="2.6"></ellipse><ellipse cx="7" cy="-10" rx="4.5" ry="2.6"></ellipse><ellipse cx="-15" cy="8" rx="4.5" ry="2.6"></ellipse><ellipse cx="7" cy="8" rx="4.5" ry="2.6"></ellipse></g>
+<path d="M -30 0 C -22 18, 16 6, 27 -16" fill="none" stroke="#6EC6E8" stroke-width="5" stroke-linecap="round"></path>
+<path d="M -27 18 C -16 34, 18 24, 30 0" fill="none" stroke="#6EC6E8" stroke-width="5" stroke-linecap="round"></path>
+<path d="M -16 -18 q -5 -4 -4 -9 t -5 -5" fill="none" stroke="#D45C88" stroke-width="1.6" stroke-linecap="round"></path>
+<g class="e fout q-mk mk-closed"><path d="M 24 -10 L 24 8" stroke="#E3B23C" stroke-width="4" stroke-linecap="round"></path><circle cx="24" cy="-11" r="4" fill="#E3B23C"></circle><circle cx="24" cy="9" r="4" fill="#E3B23C"></circle><circle cx="-25" cy="-32" r="3.8" fill="#E5484D"></circle></g>
+<g class="e fin q-mk2"><circle cx="-25" cy="-32" r="3.8" fill="#2FE6B0"></circle></g>
+</g></g>
+<g transform="translate(550 230)"><g class="e n5 q-open">
+<path d="M 27 -16 C 38 -36, -42 -30, -27 18" fill="none" stroke="#2B5F78" stroke-width="5" stroke-linecap="round"></path>
+<circle cx="-12" cy="-15" r="12" fill="#8E3D60"></circle><circle cx="12" cy="-15" r="12" fill="#A24A71"></circle>
+<circle cx="-11" cy="-5" r="13" fill="#D45C88" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="11" cy="-5" r="13" fill="#F4A6C2" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="-11" cy="13" r="13" fill="#F08FB2" stroke="#0D1211" stroke-width="1.2"></circle>
+<circle cx="11" cy="13" r="13" fill="#E06E98" stroke="#0D1211" stroke-width="1.2"></circle>
+<g fill="#FFFFFF" fill-opacity="0.38"><ellipse cx="-15" cy="-10" rx="4.5" ry="2.6"></ellipse><ellipse cx="7" cy="-10" rx="4.5" ry="2.6"></ellipse><ellipse cx="-15" cy="8" rx="4.5" ry="2.6"></ellipse><ellipse cx="7" cy="8" rx="4.5" ry="2.6"></ellipse></g>
+<path d="M -30 0 C -22 18, 16 6, 27 -16" fill="none" stroke="#6EC6E8" stroke-width="5" stroke-linecap="round"></path>
+<path d="M -27 18 C -16 34, 18 24, 30 0" fill="none" stroke="#6EC6E8" stroke-width="5" stroke-linecap="round"></path>
+<path d="M -16 -18 q -5 -4 -4 -9 t -5 -5" fill="none" stroke="#D45C88" stroke-width="1.6" stroke-linecap="round"></path>
+<g class="e fout q-mk mk-closed"><path d="M 24 -10 L 24 8" stroke="#E3B23C" stroke-width="4" stroke-linecap="round"></path><circle cx="24" cy="-11" r="4" fill="#E3B23C"></circle><circle cx="24" cy="9" r="4" fill="#E3B23C"></circle><circle cx="-25" cy="-32" r="3.8" fill="#E5484D"></circle></g>
+<g class="e fin q-mk2"><circle cx="-25" cy="-32" r="3.8" fill="#2FE6B0"></circle></g>
+</g></g>
+<g class="e tet q-tet tet0">
+<rect x="176" y="118" width="46" height="22" rx="11" fill="#E3B23C"></rect>
+<text x="199" y="133" text-anchor="middle" class="t-n" fill="#241A05">TET</text>
+</g>
+<path class="e nasc q-pol nasc0" pathLength="1" stroke-dasharray="1" d="M 364 192 q 10.6 -10 21.25 0 t 21.25 0 t 21.25 0 t 21.25 0 t 21.25 0 t 21.25 0 t 21.25 0 t 21.25 0" fill="none" stroke="#FF8A5C" stroke-width="2.5" stroke-linecap="round"></path>
+<g class="e pol q-pol pol0">
+<g transform="translate(380 230)">
+<ellipse cx="-16" cy="44" rx="8" ry="13" fill="#C9B03A" stroke="#0D1211" stroke-width="1"></ellipse>
+<ellipse cx="-5" cy="47" rx="7.5" ry="12" fill="#8FD99A" stroke="#0D1211" stroke-width="1"></ellipse>
+<path d="M 8 34 q 8 4 12 11 t 12 10" fill="none" stroke="#9AA6E6" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 2"></path>
+<circle cx="15" cy="39" r="2.4" fill="#E3B23C"></circle><circle cx="22" cy="48" r="2.4" fill="#E3B23C"></circle><circle cx="30" cy="54" r="2.4" fill="#E3B23C"></circle>
+<ellipse cx="0" cy="-3" rx="33" ry="21" fill="#1A1430"></ellipse>
+<path d="M -44 -1 L -30 -1" stroke="#9FB3A8" stroke-width="5" stroke-linecap="round"></path>
+<path d="M 30 1 L 46 1" stroke="#9FB3A8" stroke-width="5" stroke-linecap="round"></path>
+<path d="M -30 -3 Q -10 -16 12 -3 L 30 -1" fill="none" stroke="#9FB3A8" stroke-width="2"></path>
+<path d="M -30 2 Q -10 12 12 3 L 30 2" fill="none" stroke="#5E7469" stroke-width="2"></path>
+<path d="M 7 4 Q -6 9 -14 -2 Q -19 -18 -16 -38" fill="none" stroke="#FF8A5C" stroke-width="2.4" stroke-linecap="round"></path>
+<path d="M 9 -21 L 11 16" stroke="#C3CBF5" stroke-width="2.6" stroke-linecap="round"></path>
+<circle cx="8" cy="4" r="2.8" fill="#FF5C8A"></circle>
+<path d="M -42 -4 C -44 -30 -20 -45 4 -45 C 26 -45 41 -32 42 -12 L 31 -10 C 27 -20 15 -25 0 -25 C -16 -25 -28 -18 -31 -6 Z" fill="#E7A3C9" stroke="#B8739C" stroke-width="1.4"></path>
+<path d="M -42 2 C -44 23 -24 37 0 37 C 24 37 43 25 42 5 L 31 5 C 27 14 15 19 0 19 C -16 19 -28 13 -31 3 Z" fill="#9AA6E6" stroke="#6E7BC4" stroke-width="1.4"></path>
+<path d="M -43 -10 C -47 -27 -35 -39 -21 -37 C -12 -35 -12 -25 -18 -19 C -24 -14 -33 -10 -43 -10 Z" fill="#AEB8EE" stroke="#6E7BC4" stroke-width="1.4"></path>
+<g fill="#FFFFFF" fill-opacity="0.22"><ellipse cx="6" cy="-36" rx="12" ry="4"></ellipse><ellipse cx="-30" cy="-28" rx="5" ry="3"></ellipse><ellipse cx="-6" cy="28" rx="12" ry="3.5"></ellipse></g>
+<text x="2" y="31" text-anchor="middle" class="t-n" fill="#141A3C" style="stroke: none">Pol II</text>
+</g>
+</g>
+</svg>
+<div class="mono" style="display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 11px; color: #93A79B">
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #FF5C8A"></i>5mC</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #E3B23C"></i>5hmC</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 8px; height: 8px; border-radius: 50%; border: 2px solid #93A79B"></i>unmodified C</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 8px; height: 8px; border-radius: 50%; background: #E5484D"></i>H3K9me3 tail mark</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 8px; height: 8px; border-radius: 50%; background: #2FE6B0"></i>H3K27ac tail mark</span>
+</div>
+<div class="mono" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 11px; color: #93A79B; margin-top: -6px">
+<span style="color: #7E9187">Pol II:</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #9AA6E6"></i>Rpb1 + clamp</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #E7A3C9"></i>Rpb2</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #C9B03A"></i><i style="width: 10px; height: 10px; border-radius: 50%; background: #8FD99A"></i>Rpb4/7 stalk</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 8px; height: 8px; border-radius: 50%; background: #FF5C8A"></i>Mg²⁺ active site</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 14px; height: 3px; border-radius: 2px; background: #FF8A5C"></i>RNA</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 8px; height: 8px; border-radius: 50%; background: #E3B23C"></i>phosphorylated CTD</span>
+</div>
+<div class="mono" style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: 11px; color: #93A79B; margin-top: -6px">
+<span style="color: #7E9187">nucleosome:</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #F08FB2"></i>H2A</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #E06E98"></i>H2B</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #D45C88"></i>H3</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 10px; height: 10px; border-radius: 50%; background: #F4A6C2"></i>H4</span>
+<span>×2 = octamer</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 14px; height: 4px; border-radius: 2px; background: #6EC6E8"></i>~147 bp DNA, ~1.7 turns</span>
+<span style="display: inline-flex; align-items: center; gap: 6px"><i style="width: 4px; height: 12px; border-radius: 2px; background: #E3B23C"></i>linker H1</span>
+</div>
+<div class="mono" style="display: grid; grid-template-columns: minmax(0, 116px) minmax(0, 1fr); gap: 10px 12px; align-items: center; font-size: 12px; white-space: nowrap; border-top: 1px solid #1E2A25; padding-top: 14px">
+<span style="color: #7E9187">CpG methylation</span>
+<div style="display: flex; align-items: center; gap: 12px">
+<div style="flex: 1 1 auto; height: 8px; border-radius: 4px; background: #1E2A25; overflow: hidden"><div class="e beta q-beta" style="height: 100%; background: #FF5C8A; transform: scaleX(0.1); transform-origin: left"></div></div>
+<span style="position: relative; width: 64px; height: 18px; flex: none"><span class="e fout q-bhi mk-closed" style="position: absolute; left: 0; top: 0; color: #FF5C8A">β ≈ 0.9</span><span class="e fin q-blo" style="position: absolute; left: 0; top: 0; color: #E6F1EB">β ≈ 0.1</span></span>
+</div>
+<span style="color: #7E9187">chromatin</span>
+<span style="position: relative; height: 18px"><span class="e fout q-chc mk-closed" style="position: absolute; left: 0; top: 0; color: #FF5C8A">closed · heterochromatin</span><span class="e fin q-cho" style="position: absolute; left: 0; top: 0; color: #2FE6B0">open · euchromatin</span></span>
+<span style="color: #7E9187">transcription</span>
+<span style="position: relative; height: 18px"><span class="e fout q-txoff mk-closed" style="position: absolute; left: 0; top: 0; color: #7E9187">off</span><span class="e fin q-txon" style="position: absolute; left: 0; top: 0; color: #4C8DFF">on · mRNA out</span></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ================= NOW · MITRA ================= -->
+<section id="now" style="border-top: 1px solid #1E2A25; padding: 96px 0">
+<div style="max-width: 1160px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column; gap: 28px">
+<div class="rv" style="display: flex; flex-direction: column; gap: 14px; max-width: 720px">
+<p class="mono" style="margin: 0; font-size: 12.5px; color: #2FE6B0"><span style="color: #7E9187">[03]</span> Mitra Bio · Senior Data Scientist · Jul 2025–now</p>
+<h2 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.08; font-weight: 600">The pattern is the readout.</h2>
+<p style="margin: 0; font-size: 17px; color: #A9BBB1">One promoter is one switch. Across thousands of CpG sites, methylation drifts with age consistently enough to learn. I build machine-learning models that turn that pattern into quantitative skin-ageing phenotypes for skincare and therapeutic R&amp;D.</p>
+</div>
+<div class="rv" style="display: flex; flex-wrap: wrap; gap: 20px; align-items: baseline; justify-content: space-between; border-top: 1px solid #1E2A25; padding-top: 24px">
+<p style="margin: 0; font-size: 16px; color: #C3D1C9; max-width: 70ch">Lead analyst on a split-face clinical study with Candela: 1940-nm non-ablative fractional laser shifted the skin methylome away from its age-associated drift at most responsive loci.</p>
+<a class="mono" href="https://www.nature.com/articles/s41598-026-56604-4" target="_blank" rel="noopener" style="font-size: 13px">Scientific Reports · 2026 ↗</a>
+</div>
+</div>
+</section>
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience" style="border-top: 1px solid #1E2A25; padding: 96px 0">
+<div style="max-width: 1160px; margin: 0 auto; padding: 0 24px; display: flex; flex-wrap: wrap; gap: 48px">
+<div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<p class="mono" style="margin: 0; font-size: 12.5px; color: #2FE6B0"><span style="color: #7E9187">[04]</span> Experience</p>
+<h2 style="margin: 0; font-size: clamp(30px, 4vw, 42px); line-height: 1.08; font-weight: 600">From plants to pipelines to people.</h2>
+<a class="btn btn-g" href="Harry_Pink_CV.pdf" download="Harry_Pink_CV.pdf" target="_blank" style="align-self: flex-start">Full CV (PDF) ↓</a>
+</div>
+<div style="flex: 2.2 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 0; border-left: 1px solid #1E2A25; padding-left: 28px">
+<div class="rv" style="position: relative; display: flex; flex-direction: column; gap: 6px; padding-bottom: 36px">
+<span style="position: absolute; left: -34px; top: 6px; width: 11px; height: 11px; border-radius: 50%; background: #2FE6B0"></span>
+<p class="mono" style="margin: 0; font-size: 12px; color: #7E9187">Jul 2025 – present</p>
+<h3 style="margin: 0; font-size: 20px; font-weight: 600">Senior Data Scientist · <span style="color: #2FE6B0">Mitra Bio</span>, London</h3>
+<p style="margin: 0; font-size: 15px; color: #C3D1C9">Machine-learning models that predict skin-ageing phenotypes directly from DNA methylation. Lead analyst on clinical-research collaborations, including the Candela split-face laser study (<i>Scientific Reports</i>, 2026).</p>
+</div>
+<div class="rv" style="position: relative; display: flex; flex-direction: column; gap: 6px; padding-bottom: 36px">
+<span style="position: absolute; left: -34px; top: 6px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid #2FE6B0; background: #07090A; box-sizing: border-box"></span>
+<p class="mono" style="margin: 0; font-size: 12px; color: #7E9187">Sep 2023 – Jul 2025</p>
+<h3 style="margin: 0; font-size: 20px; font-weight: 600">Bioinformatics / Data Scientist · <span style="color: #2FE6B0">biomodal</span></h3>
+<p style="margin: 0; font-size: 15px; color: #C3D1C9">Built core parts of the customer-facing duet +modC / evoC Nextflow pipeline, from raw FASTQ to biological insight. Led the pysam tooling for simultaneous 5mC and 5hmC quantification from BAM files. Drove productisation, performance work and large cuts to storage footprint.</p>
+</div>
+<div class="rv" style="position: relative; display: flex; flex-direction: column; gap: 6px; padding-bottom: 36px">
+<span style="position: absolute; left: -34px; top: 6px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid #2FE6B0; background: #07090A; box-sizing: border-box"></span>
+<p class="mono" style="margin: 0; font-size: 12px; color: #7E9187">Oct 2022 – Mar 2023 · contract</p>
+<h3 style="margin: 0; font-size: 20px; font-weight: 600">Data Engineer · <span style="color: #2FE6B0">Bauer Media</span> via Gravitas</h3>
+<p style="margin: 0; font-size: 15px; color: #C3D1C9">Designed the database and data structures behind Bauer Media's SMS "Competitions" channel across its UK and EU businesses; complex PostgreSQL for metrics, data quality, lineage and BI.</p>
+</div>
+<div class="rv" style="position: relative; display: flex; flex-direction: column; gap: 6px; padding-bottom: 36px">
+<span style="position: absolute; left: -34px; top: 6px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid #E3B23C; background: #07090A; box-sizing: border-box"></span>
+<p class="mono" style="margin: 0; font-size: 12px; color: #7E9187">2019 – 2023</p>
+<h3 style="margin: 0; font-size: 20px; font-weight: 600">PhD Researcher, Plant Genetics · <span style="color: #E3B23C">Denby Lab, University of York</span></h3>
+<p style="margin: 0; font-size: 15px; color: #C3D1C9">Causal gene regulatory network inference from time-course RNA-seq to find master regulators of lettuce defence against <i>Botrytis cinerea</i>; validated hub genes in planta. QTL mapping of quantitative resistance loci (<i>Theoretical and Applied Genetics</i>, 2022). Also: data analyst for Metaverse Holdings (2021–22) and graduate teaching assistant in R / tidyverse (2020–21).</p>
+</div>
+<div class="rv" style="position: relative; display: flex; flex-direction: column; gap: 6px">
+<span style="position: absolute; left: -34px; top: 6px; width: 11px; height: 11px; border-radius: 50%; border: 2px solid #E3B23C; background: #07090A; box-sizing: border-box"></span>
+<p class="mono" style="margin: 0; font-size: 12px; color: #7E9187">2016 – 2019</p>
+<h3 style="margin: 0; font-size: 20px; font-weight: 600">BSc Genetics, First Class · <span style="color: #E3B23C">University of Sussex</span></h3>
+<p style="margin: 0; font-size: 15px; color: #C3D1C9">Graduated top of year. A summer research project in the Hochegger lab became my first paper, on centrosome dynamics and genome stability (<i>Cell Reports</i>, 2020).</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ================= PAPERS ================= -->
+<section id="papers" style="border-top: 1px solid #1E2A25; padding: 96px 0">
+<div style="max-width: 1160px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 720px">
+<p class="mono" style="margin: 0; font-size: 12.5px; color: #2FE6B0"><span style="color: #7E9187">[05]</span> Reading room</p>
+<h2 style="margin: 0; font-size: clamp(30px, 4vw, 42px); line-height: 1.08; font-weight: 600">Papers &amp; thesis</h2>
+<p style="margin: 0; font-size: 16px; color: #A9BBB1">Pull a paper off the pile to read it here.</p>
+</div>
+
+<div class="papers">
+<input class="pp-r" type="radio" name="pp" id="pp1" aria-label="Scientific Reports 2026">
+<input class="pp-r" type="radio" name="pp" id="pp2" aria-label="bioRxiv 2023 preprint">
+<input class="pp-r" type="radio" name="pp" id="pp3" aria-label="PhD thesis 2023">
+<input class="pp-r" type="radio" name="pp" id="pp4" aria-label="Theoretical and Applied Genetics 2022">
+<input class="pp-r" type="radio" name="pp" id="pp5" aria-label="Cell Reports 2020">
+
+<div class="pile">
+<label class="sheet" for="pp1">
+<span class="mono sheet-j"><i style="background: #4C8DFF"></i>SCIENTIFIC REPORTS · 2026 · PDF</span>
+<span class="sheet-t">Non-ablative fractional laser 1940-nm treatment modulates epigenetic signatures associated with skin aging in a split-face investigation</span>
+<span class="sheet-a">Schallen KP, Schomacker K, Banila C, <b>Pink H</b>, Dest N, Coleman KLR</span>
+<span class="sheet-lines"></span>
+</label>
+<label class="sheet" for="pp2">
+<span class="mono sheet-j"><i style="background: #E3B23C"></i>BIORXIV · 2023 · PDF</span>
+<span class="sheet-t">Identification of <i>Lactuca sativa</i> transcription factors impacting resistance to <i>Botrytis cinerea</i> through predictive network inference</span>
+<span class="sheet-a"><b>Pink H</b>, Talbot A, Carter R, Hickman R, … Denby K</span>
+<span class="sheet-lines"></span>
+</label>
+<label class="sheet" for="pp3">
+<span class="mono sheet-j"><i style="background: #E3B23C"></i>PHD THESIS · 2023 · PDF</span>
+<span class="sheet-t">Transcriptomics and gene regulatory network inference to identify key regulators of <i>Lactuca sativa</i> disease resistance</span>
+<span class="sheet-a"><b>Pink H</b> · supervised by Katherine Denby</span>
+<span class="sheet-lines"></span>
+</label>
+<label class="sheet" for="pp4">
+<span class="mono sheet-j"><i style="background: #7CC04A"></i>THEOR. APPL. GENET. · 2022 · PDF</span>
+<span class="sheet-t">Identification of genetic loci in lettuce mediating quantitative resistance to fungal pathogens</span>
+<span class="sheet-a"><b>Pink H</b>, Talbot A, Graceson A, Graham J, … Denby K</span>
+<span class="sheet-lines"></span>
+</label>
+<label class="sheet" for="pp5">
+<span class="mono sheet-j"><i style="background: #FF5C8A"></i>CELL REPORTS · 2020 · PDF</span>
+<span class="sheet-t">Prophase-specific perinuclear actin coordinates centrosome separation and positioning to ensure accurate chromosome segregation</span>
+<span class="sheet-a">Stiff T, Echegaray-Iturra FR, <b>Pink HJ</b>, Herbert A, … Hochegger H</span>
+<span class="sheet-lines"></span>
+</label>
+</div>
+
+<div class="viewer">
+
+<div class="v v1">
+<div class="v-bar">
+<div class="v-meta"><span class="mono" style="font-size: 11px; color: #4C8DFF">SCIENTIFIC REPORTS · 2026 · SKIN EPIGENETICS</span><span class="v-title">Non-ablative fractional laser 1940-nm treatment modulates epigenetic signatures associated with skin aging in a split-face investigation</span></div>
+<div class="v-btns"><a class="btn btn-g mono" href="https://www.nature.com/articles/s41598-026-56604-4" target="_blank" rel="noopener">Nature ↗</a><a class="btn btn-p mono" href="papers/s41598-026-56604-4.pdf" target="_blank" rel="noopener">Full PDF ↗</a></div>
+</div>
+<div class="v-find mono"><span>jump to</span><a target="pdf1" href="pdfjs/web/viewer.html?file=../../papers/s41598-026-56604-4.pdf#search=methylation">methylation</a><a target="pdf1" href="pdfjs/web/viewer.html?file=../../papers/s41598-026-56604-4.pdf#search=1940">1940 nm</a><a target="pdf1" href="pdfjs/web/viewer.html?file=../../papers/s41598-026-56604-4.pdf#search=epigenetic">epigenetic</a></div>
+<div class="v-body">
+<iframe name="pdf1" src="pdfjs/web/viewer.html?file=../../papers/s41598-026-56604-4.pdf#zoom=page-width" title="Scientific Reports 2026 PDF" loading="lazy"></iframe>
+</div>
+</div>
+
+<div class="v v2">
+<div class="v-bar">
+<div class="v-meta"><span class="mono" style="font-size: 11px; color: #E3B23C">BIORXIV PREPRINT · 2023 · NETWORK INFERENCE</span><span class="v-title">Identification of Lactuca sativa transcription factors impacting resistance to Botrytis cinerea through predictive network inference</span></div>
+<div class="v-btns"><a class="btn btn-g mono" href="https://www.biorxiv.org/content/10.1101/2023.07.19.549542v1" target="_blank" rel="noopener">bioRxiv ↗</a><a class="btn btn-p mono" href="papers/Pink2023_bioRxiv.pdf" target="_blank" rel="noopener">Full PDF ↗</a></div>
+</div>
+<div class="v-find mono"><span>jump to</span><a target="pdf2" href="pdfjs/web/viewer.html?file=../../papers/Pink2023_bioRxiv.pdf#search=OutPredict">OutPredict</a><a target="pdf2" href="pdfjs/web/viewer.html?file=../../papers/Pink2023_bioRxiv.pdf#search=LsNAC53">LsNAC53</a><a target="pdf2" href="pdfjs/web/viewer.html?file=../../papers/Pink2023_bioRxiv.pdf#search=BOS1">BOS1</a></div>
+<div class="v-body">
+<iframe name="pdf2" src="pdfjs/web/viewer.html?file=../../papers/Pink2023_bioRxiv.pdf#zoom=page-width" title="bioRxiv 2023 preprint PDF" loading="lazy"></iframe>
+</div>
+</div>
+
+<div class="v v3">
+<div class="v-bar">
+<div class="v-meta"><span class="mono" style="font-size: 11px; color: #E3B23C">PHD THESIS · 2023 · UNIVERSITY OF YORK</span><span class="v-title">Transcriptomics and gene regulatory network inference to identify key regulators of Lactuca sativa disease resistance</span></div>
+<div class="v-btns"><a class="btn btn-g mono" href="https://etheses.whiterose.ac.uk/id/eprint/34510/" target="_blank" rel="noopener">White Rose ↗</a><a class="btn btn-p mono" href="papers/Pink_205061442_WREO.pdf" target="_blank" rel="noopener">Full PDF ↗</a></div>
+</div>
+<div class="v-find mono"><span>jump to</span><a target="pdf3" href="pdfjs/web/viewer.html?file=../../papers/Pink_205061442_WREO.pdf#search=OutPredict">OutPredict</a><a target="pdf3" href="pdfjs/web/viewer.html?file=../../papers/Pink_205061442_WREO.pdf#search=LsNAC53">LsNAC53</a><a target="pdf3" href="pdfjs/web/viewer.html?file=../../papers/Pink_205061442_WREO.pdf#search=Sclerotinia">Sclerotinia</a></div>
+<div class="v-body">
+<iframe name="pdf3" src="pdfjs/web/viewer.html?file=../../papers/Pink_205061442_WREO.pdf#zoom=page-width" title="PhD thesis PDF" loading="lazy"></iframe>
+</div>
+</div>
+
+<div class="v v4">
+<div class="v-bar">
+<div class="v-meta"><span class="mono" style="font-size: 11px; color: #7CC04A">THEORETICAL AND APPLIED GENETICS · 2022 · 135(7), 2481–2500</span><span class="v-title">Identification of genetic loci in lettuce mediating quantitative resistance to fungal pathogens</span></div>
+<div class="v-btns"><a class="btn btn-g mono" href="https://doi.org/10.1007/s00122-022-04129-5" target="_blank" rel="noopener">Springer ↗</a><a class="btn btn-p mono" href="papers/s00122-022-04129-5.pdf" target="_blank" rel="noopener">Full PDF ↗</a></div>
+</div>
+<div class="v-find mono"><span>jump to</span><a target="pdf4" href="pdfjs/web/viewer.html?file=../../papers/s00122-022-04129-5.pdf#search=QTL">QTL</a><a target="pdf4" href="pdfjs/web/viewer.html?file=../../papers/s00122-022-04129-5.pdf#search=Sclerotinia">Sclerotinia</a><a target="pdf4" href="pdfjs/web/viewer.html?file=../../papers/s00122-022-04129-5.pdf#search=Botrytis">Botrytis</a></div>
+<div class="v-body">
+<iframe name="pdf4" src="pdfjs/web/viewer.html?file=../../papers/s00122-022-04129-5.pdf#zoom=page-width" title="Theoretical and Applied Genetics 2022 PDF" loading="lazy"></iframe>
+</div>
+</div>
+
+<div class="v v5">
+<div class="v-bar">
+<div class="v-meta"><span class="mono" style="font-size: 11px; color: #FF5C8A">CELL REPORTS · 2020 · 31(8), 107681</span><span class="v-title">Prophase-specific perinuclear actin coordinates centrosome separation and positioning to ensure accurate chromosome segregation</span></div>
+<div class="v-btns"><a class="btn btn-g mono" href="https://doi.org/10.1016/j.celrep.2020.107681" target="_blank" rel="noopener">Cell Press ↗</a><a class="btn btn-p mono" href="papers/PIIS2211124720306343.pdf" target="_blank" rel="noopener">Full PDF ↗</a></div>
+</div>
+<div class="v-find mono"><span>jump to</span><a target="pdf5" href="pdfjs/web/viewer.html?file=../../papers/PIIS2211124720306343.pdf#search=prophase">prophase</a><a target="pdf5" href="pdfjs/web/viewer.html?file=../../papers/PIIS2211124720306343.pdf#search=actin">actin</a><a target="pdf5" href="pdfjs/web/viewer.html?file=../../papers/PIIS2211124720306343.pdf#search=centrosome">centrosome</a></div>
+<div class="v-body">
+<iframe name="pdf5" src="pdfjs/web/viewer.html?file=../../papers/PIIS2211124720306343.pdf#zoom=page-width" title="Cell Reports 2020 PDF" loading="lazy"></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a class="mono" href="https://scholar.google.com/citations?user=hccZzBcAAAAJ&amp;hl=en" target="_blank" rel="noopener" style="font-size: 13px; align-self: flex-start">Full list on Google Scholar ↗</a>
+</div>
+</section>
+
+<!-- ================= TOOLKIT ================= -->
+<section style="border-top: 1px solid #1E2A25; padding: 96px 0">
+<div style="max-width: 1160px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p class="mono" style="margin: 0; font-size: 12.5px; color: #2FE6B0"><span style="color: #7E9187">[06]</span> Toolkit</p>
+<h2 style="margin: 0; font-size: clamp(30px, 4vw, 42px); line-height: 1.08; font-weight: 600">What I build with</h2>
+</div>
+<div class="mono" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 22px 40px; font-size: 13px">
+<div style="display: flex; flex-direction: column; gap: 10px"><span style="font-size: 11px; color: #7E9187">LANGUAGES</span><div style="display: flex; flex-wrap: wrap; gap: 8px"><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">Python</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">R</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">SQL</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">Rust</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">Bash</span></div></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><span style="font-size: 11px; color: #7E9187">ML / STATS</span><div style="display: flex; flex-wrap: wrap; gap: 8px"><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">scikit-learn</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">XGBoost</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">PyTorch</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">random forests</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">survival analysis</span></div></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><span style="font-size: 11px; color: #7E9187">BIOINFORMATICS</span><div style="display: flex; flex-wrap: wrap; gap: 8px"><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">Nextflow</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">pysam</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">Bioconductor</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">NGS &amp; methylation</span></div></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><span style="font-size: 11px; color: #7E9187">DATA / VIZ</span><div style="display: flex; flex-wrap: wrap; gap: 8px"><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">pandas</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">tidyverse</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">ggplot2</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">Shiny</span></div></div>
+<div style="display: flex; flex-direction: column; gap: 10px"><span style="font-size: 11px; color: #7E9187">INFRA / CLOUD</span><div style="display: flex; flex-wrap: wrap; gap: 8px"><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">Docker</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">Git</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">GCP</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">AWS</span><span style="border: 1px solid #22312B; border-radius: 4px; padding: 5px 10px; color: #C3D1C9">PostgreSQL</span></div></div>
+</div>
+</div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" style="border-top: 1px solid #1E2A25; padding: 96px 0 64px">
+<div style="max-width: 1160px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 14px">
+<p class="mono" style="margin: 0; font-size: 12.5px; color: #2FE6B0"><span style="color: #7E9187">[07]</span> Get in touch</p>
+<h2 style="margin: 0; font-size: clamp(30px, 4vw, 42px); line-height: 1.08; font-weight: 600">Let's talk about your data.</h2>
+</div>
+<div class="mono" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 12px; font-size: 14px">
+<a href="mailto:hpink97@gmail.com" style="border: 1px solid #1E2A25; border-radius: 10px; background: #0D1211; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: #E6F1EB"><span style="font-size: 11px; color: #7E9187">EMAIL</span>hpink97@gmail.com</a>
+<a href="https://www.linkedin.com/in/harry-pink/" target="_blank" rel="noopener" style="border: 1px solid #1E2A25; border-radius: 10px; background: #0D1211; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: #E6F1EB"><span style="font-size: 11px; color: #7E9187">LINKEDIN</span>in/harry-pink ↗</a>
+<a href="https://github.com/hpink97" target="_blank" rel="noopener" style="border: 1px solid #1E2A25; border-radius: 10px; background: #0D1211; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: #E6F1EB"><span style="font-size: 11px; color: #7E9187">GITHUB</span>hpink97 ↗</a>
+<a href="Harry_Pink_CV.pdf" download="Harry_Pink_CV.pdf" target="_blank" style="border: 1px solid #2F5B4C; border-radius: 10px; background: #0B1E18; padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: #2FE6B0"><span style="font-size: 11px; color: #7E9187">CV</span>Download PDF ↓</a>
+</div>
+<p class="mono" style="margin: 24px 0 0; font-size: 12px; color: #7E9187; border-top: 1px solid #1E2A25; padding-top: 24px">© Harry Pink · London · scientific diagrams are simplified schematics</p>
+</div>
+</section>
+
+</div>
+<script>
+// pdf.js can't fetch PDFs over file://, so fall back to the browser's native viewer when opened locally
+if (location.protocol === 'file:') {
+  document.querySelectorAll('.v-body iframe').forEach(f => {
+    const m = f.getAttribute('src').match(/file=\.\.\/\.\.\/([^#&]+)/);
+    if (m) f.src = m[1] + '#view=FitH';
+  });
+  document.querySelectorAll('.v-find').forEach(e => e.style.display = 'none');
+}
+</script>
+</body>
+</html>
